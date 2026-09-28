@@ -4,19 +4,24 @@ button.button {
   position: relative;
   z-index: 3;
   font-size: 1rem;
+  letter-spacing: 0.04em;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 
   &.button-style-1 {
     background-color: var(--white-color);
-    border: solid 0.05rem var(--alt-color);
-    color: var(--alt-color);
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem;
+    border: 1px solid rgba(168, 135, 80, 0.7);
+    color: var(--dark-color);
+    border-radius: 0.1rem;
+    padding: 0.75rem 1rem;
   }
 
   &.button-style-2 {
-    background-color: var(--alt-color);
+    background-color: var(--dark-color);
     color: var(--white-color);
     border: none;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
   }
 }

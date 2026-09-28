@@ -26,10 +26,14 @@
 
   > .modal {
     background-color: var(--light-color);
+    max-width: calc(100vw - 2rem);
     animation-name: modal-fade-in;
     animation-duration: 0.5s;
     padding-top: 0.5rem;
     opacity: 1;
+    border-radius: 0.15rem;
+    box-shadow: 0 1.25rem 3.5rem rgba(0, 0, 0, 0.18);
+    overflow: hidden;
 
     .close-button-wrapper {
       padding: 0 0.5rem;

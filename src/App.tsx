@@ -1,6 +1,7 @@
 import { Cover } from "./component/cover"
 import { Location } from "./component/location"
 import "./App.scss"
+import { BGEffect } from "./component/bgEffect"
 import { Invitation } from "./component/invitation"
 import { Calendar } from "./component/calendar"
 import { Gallery } from "./component/gallery"
@@ -18,6 +19,8 @@ import { ShareButton } from "./component/shareButton"
 function App() {
   return (
     <div className="background">
+      {/* 은은한 흰 꽃잎 배경 효과 */}
+      <BGEffect />
       <div className="card-view">
         <LazyDiv className="card-group">
           {/* 메인 커버 섹션 */}

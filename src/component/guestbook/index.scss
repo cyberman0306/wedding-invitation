@@ -7,10 +7,11 @@
 
   .post {
     text-align: left;
-    box-shadow: 0.1rem 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.1);
+    box-shadow: none;
     background-color: var(--white-color);
-    border-radius: 0.5rem;
-    border: 1px solid var(--light-grey-color);
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid var(--light-grey-color);
     font-size: 0.9rem;
     margin-top: 0.2rem;
 
@@ -96,21 +97,33 @@
       padding: 0 0.7rem 0.7rem 0.7rem;
 
       input {
-        padding: 0.5rem;
+        padding: 0.75rem;
         margin-bottom: 0.5rem;
         border: 1px solid var(--light-grey-color);
-        border-radius: 0.3rem;
+        border-radius: 0.1rem;
+        background-color: var(--alt-bg-color);
         font-family: "MapoGoldenPier";
         font-size: 0.8rem;
+
+        &:focus {
+          border-color: var(--theme-color);
+          outline: none;
+        }
       }
 
       textarea {
-        padding: 0.5rem;
+        padding: 0.75rem;
         margin-bottom: 0.5rem;
         border: 1px solid var(--light-grey-color);
-        border-radius: 0.3rem;
+        border-radius: 0.1rem;
+        background-color: var(--alt-bg-color);
         font-family: "MapoGoldenPier";
         font-size: 0.8rem;
+
+        &:focus {
+          border-color: var(--theme-color);
+          outline: none;
+        }
       }
     }
 
@@ -150,7 +163,7 @@
         padding: 0.3rem 0.5rem;
         margin: 0 0.2rem;
         border: 1px solid var(--dark-grey-color);
-        border-radius: 0.3rem;
+        border-radius: 0.1rem;
         &.current {
           background-color: var(--theme-color);
           color: var(--white-color);
@@ -183,12 +196,18 @@
       margin-top: 1rem;
 
       input {
-        padding: 0.5rem;
+        padding: 0.75rem;
         margin-bottom: 0.5rem;
         border: 1px solid var(--light-grey-color);
-        border-radius: 0.3rem;
+        border-radius: 0.1rem;
+        background-color: var(--alt-bg-color);
         font-family: "MapoGoldenPier";
         font-size: 0.8rem;
+
+        &:focus {
+          border-color: var(--theme-color);
+          outline: none;
+        }
       }
     }
 
