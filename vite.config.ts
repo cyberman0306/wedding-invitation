@@ -46,6 +46,8 @@ export default defineConfig({
           .replace(/<%= GROOM_FULLNAME %>/g, GROOM_FULLNAME)
           .replace(/<%= BRIDE_FULLNAME %>/g, BRIDE_FULLNAME)
         fs.writeFileSync(`${distFolder}/manifest.json`, processed)
+        fs.mkdirSync(`${distFolder}/admin`, { recursive: true })
+        fs.copyFileSync(`${distFolder}/index.html`, `${distFolder}/admin/index.html`)
       },
     },
   ],

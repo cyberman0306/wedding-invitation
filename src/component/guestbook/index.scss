@@ -1,5 +1,10 @@
 .guestbook,
 .guestbook-list-modal {
+  .guestbook-message {
+    padding: 1rem 0;
+    color: var(--alt-color);
+  }
+
   .post {
     text-align: left;
     box-shadow: 0.1rem 0.1rem 0.3rem 0 rgba(0, 0, 0, 0.1);
@@ -140,6 +145,8 @@
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
       .page {
+        background: var(--white-color);
+        font-size: 0.9rem;
         padding: 0.3rem 0.5rem;
         margin: 0 0.2rem;
         border: 1px solid var(--dark-grey-color);

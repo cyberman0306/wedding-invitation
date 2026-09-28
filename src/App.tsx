@@ -9,7 +9,6 @@ import { Information } from "./component/information"
 import { GuestBook } from "./component/guestbook"
 import { LazyDiv } from "./component/lazyDiv"
 import { ShareButton } from "./component/shareButton"
-import { STATIC_ONLY } from "./env"
 
 /**
  * 메인 애플리케이션 컴포넌트입니다.
@@ -47,8 +46,8 @@ function App() {
         <LazyDiv className="card-group">
           {/* 축의금 및 연락처 정보 섹션 */}
           <Information />
-          {/* 방명록 섹션 (정적 모드가 아닐 때만 표시) */}
-          {!STATIC_ONLY && <GuestBook />}
+          {/* LIVE/ARCHIVE 모드를 모두 지원하는 방명록 섹션 */}
+          <GuestBook />
         </LazyDiv>
 
         {/* 카카오톡/링크 공유 버튼 */}

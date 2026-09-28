@@ -1,23 +1,27 @@
 /**
- * 네이버 지도 클라이언트 ID
- * .env 파일의 VITE_NAVER_MAP_CLIENT_ID에서 가져옵니다.
+ * 외부 SDK 및 데이터 모드 설정입니다.
+ * Firebase Web Config는 공개 가능한 식별 정보이며 실제 권한은 Security Rules가 통제합니다.
  */
-export const NAVER_MAP_CLIENT_ID = import.meta.env.VITE_NAVER_MAP_CLIENT_ID
+export const NAVER_MAP_CLIENT_ID = import.meta.env.VITE_NAVER_MAP_CLIENT_ID ?? ""
+export const KAKAO_SDK_JS_KEY = import.meta.env.VITE_KAKAO_SDK_JS_KEY ?? ""
 
-/**
- * 카카오 SDK 자바스크립트 키
- * .env 파일의 VITE_KAKAO_SDK_JS_KEY에서 가져옵니다.
- */
-export const KAKAO_SDK_JS_KEY = import.meta.env.VITE_KAKAO_SDK_JS_KEY
+export const FIREBASE_CONFIG = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY ?? "",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ?? "",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ?? "",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ?? "",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ?? "",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID ?? "",
+}
 
-/**
- * 백엔드 서버 URL (방명록 기능 등에 사용)
- * .env 파일의 VITE_SERVER_URL에서 가져옵니다.
- */
-export const SERVER_URL = import.meta.env.VITE_SERVER_URL
+export const GUESTBOOK_MODE =
+  import.meta.env.VITE_GUESTBOOK_MODE === "archive" ? "archive" : "live"
 
-/**
- * 정적 페이지 모드 여부
- * true일 경우 서버 연동 기능(방명록 등)이 비활성화됩니다.
- */
 export const STATIC_ONLY = import.meta.env.VITE_STATIC_ONLY === "true"
+
+export const FIREBASE_ENABLED = Boolean(
+  FIREBASE_CONFIG.apiKey &&
+    FIREBASE_CONFIG.authDomain &&
+    FIREBASE_CONFIG.projectId &&
+    FIREBASE_CONFIG.appId,
+)

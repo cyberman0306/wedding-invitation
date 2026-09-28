@@ -5,12 +5,7 @@ import knaviIcon from "../../icons/knavi-icon.png"
 import tmapIcon from "../../icons/tmap-icon.png"
 import LockIcon from "../../icons/lock-icon.svg?react"
 import UnlockIcon from "../../icons/unlock-icon.svg?react"
-import {
-  KMAP_PLACE_ID,
-  LOCATION,
-  NMAP_PLACE_ID,
-  WEDDING_HALL_POSITION,
-} from "../../const"
+import { LOCATION, WEDDING_HALL_POSITION } from "../../const"
 import { NAVER_MAP_CLIENT_ID } from "../../env"
 
 /**
@@ -140,11 +135,14 @@ const NaverMap = () => {
             switch (checkDevice()) {
               case "ios":
               case "android":
-                window.open(`nmap://place?id=${NMAP_PLACE_ID}`, "_self")
+                window.open(
+                  `nmap://search?query=${encodeURIComponent(LOCATION)}`,
+                  "_self",
+                )
                 break
               default:
                 window.open(
-                  `https://map.naver.com/p/entry/place/${NMAP_PLACE_ID}`,
+                  `https://map.naver.com/p/search/${encodeURIComponent(LOCATION)}`,
                   "_blank",
                 )
                 break
@@ -171,7 +169,7 @@ const NaverMap = () => {
                 break
               default:
                 window.open(
-                  `https://map.kakao.com/link/map/${KMAP_PLACE_ID}`,
+                  `https://map.kakao.com/link/map/${encodeURIComponent(LOCATION)},${WEDDING_HALL_POSITION[1]},${WEDDING_HALL_POSITION[0]}`,
                   "_blank",
                 )
                 break

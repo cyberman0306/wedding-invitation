@@ -12,17 +12,19 @@ import { useEffect, useRef, useState } from "react"
 import HeartIcon from "../../icons/heart-icon.svg?react"
 import CalendarIcon from "../../icons/calendar-icon.svg?react"
 import MarkerIcon from "../../icons/marker-icon.svg?react"
-import { SERVER_URL } from "../../env"
+import { FIREBASE_ENABLED } from "../../env"
+import { createAttendance } from "../../services/attendanceService"
 
 /**
  * 입력 데이터 제한 규칙
  */
 const RULES = {
   name: {
-    maxLength: 10,
+    maxLength: 20,
   },
   count: {
-    min: 0,
+    min: 1,
+    max: 20,
     default: 1,
   },
 }
@@ -43,14 +45,14 @@ export const AttendanceInfo = () => {
     if (initialized.current) return
     initialized.current = true
 
-    // 서버 URL이 없거나 예식일이 지났으면 안내 모달을 띄우지 않음
-    if (!SERVER_URL || WEDDING_DATE.isBefore(now.current)) return
+    // Firebase가 설정되지 않았거나 예식일이 지났으면 안내 모달을 띄우지 않음
+    if (!FIREBASE_ENABLED || WEDDING_DATE.isBefore(now.current)) return
 
     attendanceInfoModalState[1](true)
   }, [attendanceInfoModalState])
 
-  // 서버 연동 기능이 비활성화되어 있거나 이미 예식이 종료된 경우 섹션을 렌더링하지 않음
-  if (!SERVER_URL || WEDDING_DATE.isBefore(now.current)) return null
+  // Firebase가 설정되지 않았거나 이미 예식이 종료된 경우 섹션을 렌더링하지 않음
+  if (!FIREBASE_ENABLED || WEDDING_DATE.isBefore(now.current)) return null
 
   return (
     <>
@@ -172,7 +174,7 @@ const AttendanceFormModal = ({ onClose }: { onClose: () => void }) => {
             : inputRef.current.side.bride.checked
               ? "bride"
               : null
-          const name = inputRef.current.name.value
+          const name = inputRef.current.name.value.trim()
           const meal = inputRef.current.meal.yes.checked
             ? "yes"
             : inputRef.current.meal.undecided.checked
@@ -207,18 +209,12 @@ const AttendanceFormModal = ({ onClose }: { onClose: () => void }) => {
             alert(`참석 인원을 ${RULES.count.min}명 이상으로 입력해주세요.`)
             return
           }
-
-          // 서버에 데이터 전송
-          const res = await fetch(`${SERVER_URL}/attendance`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ side, name, meal, count }),
-          })
-          if (!res.ok) {
-            throw new Error(res.statusText)
+          if (!Number.isInteger(count) || count > RULES.count.max) {
+            alert(`참석 인원을 ${RULES.count.max}명 이하로 입력해주세요.`)
+            return
           }
+
+          await createAttendance({ side, name, meal, count })
 
           alert("참석 의사가 성공적으로 전달되었습니다.")
           onClose()
@@ -333,6 +329,7 @@ const AttendanceFormModal = ({ onClose }: { onClose: () => void }) => {
               disabled={loading}
               type="number"
               min={RULES.count.min}
+              max={RULES.count.max}
               defaultValue={RULES.count.default}
               ref={(ref) => {
                 inputRef.current.count = ref as HTMLInputElement
