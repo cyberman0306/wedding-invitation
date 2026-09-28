@@ -166,16 +166,39 @@
     .info-message {
       text-align: center;
       line-height: 1.5rem;
+      font-size: 0.9rem;
       padding-bottom: 1.5rem;
       border-bottom: 1px dotted var(--dark-grey-color);
     }
     .wedding-info {
       padding-top: 1.5rem;
-      padding-left: 2rem;
-      line-height: 1.5rem;
+      padding-left: 0.25rem;
+      padding-right: 0.25rem;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      font-size: 0.9rem;
+      line-height: 1.35rem;
+
+      .wedding-info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.45rem;
+        text-align: left;
+
+        &.date {
+          white-space: nowrap;
+        }
+      }
+
       svg {
+        flex: 0 0 auto;
         width: 0.8rem;
         height: 0.8rem;
+        margin-top: 0.2rem;
       }
     }
   }

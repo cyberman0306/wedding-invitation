@@ -4,7 +4,6 @@ import {
   GROOM_FULLNAME,
   LOCATION,
   WEDDING_DATE,
-  WEDDING_DATE_FORMAT,
 } from "../../const"
 import { Button } from "../button"
 import { Modal } from "../modal"
@@ -98,11 +97,20 @@ export const AttendanceInfo = () => {
             정성껏 준비하겠습니다.
           </div>
           <div className="wedding-info">
-            <HeartIcon /> 신랑 {GROOM_FULLNAME} & 신부 {BRIDE_FULLNAME}
-            <br />
-            <CalendarIcon /> {WEDDING_DATE.format(WEDDING_DATE_FORMAT)}
-            <br />
-            <MarkerIcon /> {LOCATION}
+            <div className="wedding-info-row">
+              <HeartIcon />
+              <span>
+                신랑 {GROOM_FULLNAME} & 신부 {BRIDE_FULLNAME}
+              </span>
+            </div>
+            <div className="wedding-info-row date">
+              <CalendarIcon />
+              <span>{WEDDING_DATE.format("YYYY년 M월 D일 (ddd) A h:mm")}</span>
+            </div>
+            <div className="wedding-info-row">
+              <MarkerIcon />
+              <span>{LOCATION}</span>
+            </div>
           </div>
         </div>
         <div className="footer">
