@@ -66,6 +66,11 @@ export const Location = () => {
             경인고속도로 → 부평 I.C에서 우회전 50m
             <br />
             내비게이션에서 <b>카리스호텔</b>을 검색해 주세요.
+            <div className="parking-guide">
+              <div className="subheading">주차 안내</div>
+              웨딩홀 주차장과 계산중앙교회 주차장(무료) 또는 홈플러스
+              작전점 주차장(2시간 무료)을 이용하실 수 있습니다.
+            </div>
           </div>
         </div>
       </LazyDiv>

@@ -121,6 +121,16 @@
     .content {
       font-size: 0.9rem;
       line-height: 1.4;
+
+      .parking-guide {
+        margin-top: 1rem;
+
+        .subheading {
+          margin-bottom: 0.35rem;
+          color: var(--theme-color);
+          font-weight: 600;
+        }
+      }
     }
   }
 }
