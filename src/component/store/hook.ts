@@ -8,7 +8,7 @@ const baseUrl = import.meta.env.BASE_URL
 
 // 네이버 지도 및 카카오 SDK를 로드하기 위한 외부 스크립트 URL
 const NAVER_MAP_URL = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${NAVER_MAP_CLIENT_ID}`
-const KAKAO_SDK_URL = `${baseUrl}/kakao_js_sdk/2.7.1/kakao.min.js`
+const KAKAO_SDK_URL = `${baseUrl}kakao_js_sdk/2.7.1/kakao.min.js`
 
 /**
  * 네이버 지도 SDK를 로드하고 사용할 수 있게 해주는 Hook입니다.

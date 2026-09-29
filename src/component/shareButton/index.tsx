@@ -47,15 +47,6 @@ export const ShareButton = () => {
                 webUrl: invitationUrl,
               },
             },
-            buttons: [
-              {
-                title: "초대장 보기",
-                link: {
-                  mobileWebUrl: invitationUrl,
-                  webUrl: invitationUrl,
-                },
-              },
-            ],
           })
         }}
       >

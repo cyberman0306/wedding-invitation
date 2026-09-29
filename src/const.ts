@@ -44,7 +44,7 @@ export const LOCATION_ADDRESS =
  * 카카오톡 공유 시 사용할 위치 정보 주소
  * 필요에 따라 LOCATION과 다르게 설정할 수 있습니다.
  */
-export const SHARE_ADDRESS = LOCATION
+export const SHARE_ADDRESS = "인천 계양구 계양대로 28"
 
 /**
  * 카카오톡 공유 시 표시될 위치 제목
