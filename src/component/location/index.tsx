@@ -2,7 +2,11 @@ import { Map } from "./map"
 import CarIcon from "../../icons/car-icon.svg?react"
 import BusIcon from "../../icons/bus-icon.svg?react"
 import { LazyDiv } from "../lazyDiv"
-import { LOCATION, LOCATION_ADDRESS } from "../../const"
+import {
+  LOCATION,
+  LOCATION_PARCEL_ADDRESS,
+  LOCATION_ROAD_ADDRESS,
+} from "../../const"
 
 /**
  * 오시는 길 정보를 표시하는 컴포넌트입니다.
@@ -18,7 +22,10 @@ export const Location = () => {
         <h2 className="english">Location</h2>
         <div className="addr">
           {LOCATION}
-          <div className="detail">{LOCATION_ADDRESS}</div>
+          <div className="detail">
+            <span className="road-address">{LOCATION_ROAD_ADDRESS}</span>
+            <span className="parcel-address">({LOCATION_PARCEL_ADDRESS})</span>
+          </div>
         </div>
         <Map />
       </LazyDiv>

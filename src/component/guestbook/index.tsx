@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { dayjs } from "../../const"
 import { GUESTBOOK_MODE } from "../../env"
 import {
   createGuestbookPost,
+  getGuestbookPage,
   GUESTBOOK_RULES,
   subscribeGuestbook,
+  type GuestbookPage,
   type GuestbookPost,
 } from "../../services/guestbookService"
 import { Button } from "../button"
 import { LazyDiv } from "../lazyDiv"
 import { Modal } from "../modal"
-
-const POSTS_PER_PAGE = 5
 
 const Post = ({ post }: { post: GuestbookPost }) => (
   <div className="post">
@@ -86,7 +86,7 @@ export const GuestBook = () => {
         className="guestbook-list-modal"
         closeOnClickBackground={true}
       >
-        <GuestbookList posts={posts} onClose={() => listModalState[1](false)} />
+        <GuestbookList onClose={() => listModalState[1](false)} />
       </Modal>
     </>
   )
@@ -162,23 +162,50 @@ const WriteGuestbookForm = ({ onClose }: { onClose: () => void }) => {
   )
 }
 
-const GuestbookList = ({
-  posts,
-  onClose,
-}: {
-  posts: GuestbookPost[]
-  onClose: () => void
-}) => {
+const GuestbookList = ({ onClose }: { onClose: () => void }) => {
+  const [pages, setPages] = useState<GuestbookPage[]>([])
   const [page, setPage] = useState(0)
-  const totalPages = Math.max(1, Math.ceil(posts.length / POSTS_PER_PAGE))
-  const pagePosts = useMemo(
-    () => posts.slice(page * POSTS_PER_PAGE, (page + 1) * POSTS_PER_PAGE),
-    [page, posts],
-  )
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const currentPage = pages[page]
 
   useEffect(() => {
-    if (page >= totalPages) setPage(totalPages - 1)
-  }, [page, totalPages])
+    let active = true
+    getGuestbookPage()
+      .then((firstPage) => {
+        if (active) setPages([firstPage])
+      })
+      .catch(() => {
+        if (active) setError("방명록을 불러오지 못했습니다.")
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const goToNextPage = async () => {
+    if (!currentPage || loading) return
+    if (page + 1 < pages.length) {
+      setPage(page + 1)
+      return
+    }
+    if (!currentPage.hasMore) return
+
+    setLoading(true)
+    setError("")
+    try {
+      const nextPage = await getGuestbookPage(currentPage.nextCursor)
+      setPages((previous) => [...previous, nextPage])
+      setPage(page + 1)
+    } catch {
+      setError("오래된 방명록을 불러오지 못했습니다. 다시 시도해 주세요.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
@@ -186,23 +213,44 @@ const GuestbookList = ({
         <div className="title">방명록 전체보기</div>
       </div>
       <div className="content">
-        {pagePosts.map((post) => (
+        {currentPage?.posts.map((post) => (
           <Post key={post.id} post={post} />
         ))}
-        {pagePosts.length === 0 && (
+        {loading && pages.length === 0 && (
+          <div className="guestbook-message">방명록을 불러오는 중입니다.</div>
+        )}
+        {error && <div className="guestbook-message">{error}</div>}
+        {!loading && !error && currentPage?.posts.length === 0 && (
           <div className="guestbook-message">작성된 방명록이 없습니다.</div>
         )}
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, index) => (
+        <div className="pagination" aria-label="방명록 페이지">
+          <button
+            type="button"
+            className="page page-control"
+            disabled={page === 0 || loading}
+            onClick={() => setPage(page - 1)}
+          >
+            이전
+          </button>
+          {pages.map((_, index) => (
             <button
               type="button"
               className={`page${index === page ? " current" : ""}`}
               key={index}
+              aria-current={index === page ? "page" : undefined}
               onClick={() => setPage(index)}
             >
               {index + 1}
             </button>
           ))}
+          <button
+            type="button"
+            className="page page-control"
+            disabled={loading || !(page + 1 < pages.length || currentPage?.hasMore)}
+            onClick={goToNextPage}
+          >
+            다음
+          </button>
         </div>
       </div>
       <div className="footer">

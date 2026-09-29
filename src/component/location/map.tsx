@@ -5,7 +5,11 @@ import knaviIcon from "../../icons/knavi-icon.png"
 import tmapIcon from "../../icons/tmap-icon.png"
 import LockIcon from "../../icons/lock-icon.svg?react"
 import UnlockIcon from "../../icons/unlock-icon.svg?react"
-import { LOCATION, WEDDING_HALL_POSITION } from "../../const"
+import {
+  LOCATION,
+  LOCATION_ROAD_ADDRESS,
+  WEDDING_HALL_POSITION,
+} from "../../const"
 import { NAVER_MAP_CLIENT_ID } from "../../env"
 
 /**
@@ -15,7 +19,20 @@ import { NAVER_MAP_CLIENT_ID } from "../../env"
  */
 export const Map = () => {
   // 네이버 지도 클라이언트 ID가 설정되어 있을 때만 지도를 렌더링합니다.
-  return NAVER_MAP_CLIENT_ID ? <NaverMap /> : <div>Map is not available</div>
+  return NAVER_MAP_CLIENT_ID ? (
+    <NaverMap />
+  ) : (
+    <div className="map-fallback">
+      <span>예식장 위치를 지도에서 확인해 주세요.</span>
+      <a
+        href={`https://map.naver.com/p/search/${encodeURIComponent(LOCATION_ROAD_ADDRESS)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        네이버 지도에서 보기
+      </a>
+    </div>
+  )
 }
 
 /**

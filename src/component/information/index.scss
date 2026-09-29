@@ -214,10 +214,13 @@
   }
 
   .footer {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem;
     button {
-      width: 100%;
+      min-width: 0;
+      white-space: nowrap;
+      padding-inline: 0.65rem;
     }
   }
 }

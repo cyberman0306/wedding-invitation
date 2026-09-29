@@ -13,6 +13,12 @@
     }
   }
 
+  @media (max-width: 980px) {
+    .wedding-date {
+      margin-top: 0.35rem;
+    }
+  }
+
   .wedding-day-of-week {
     font-size: 1.2rem;
     opacity: 0.7;
@@ -28,6 +34,9 @@
     img {
       width: 100%;
       height: auto;
+    }
+    @media (max-width: 500px) {
+      height: clamp(23rem, 55svh, 29rem);
     }
   }
 

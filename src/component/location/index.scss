@@ -1,9 +1,37 @@
 .location {
+  .map-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 2rem 1rem;
+    background-color: var(--alt-bg-color);
+    color: var(--dark-color);
+    font-size: 0.9rem;
+
+    a {
+      border-bottom: 1px solid var(--theme-color);
+      color: var(--theme-color);
+      padding-bottom: 0.15rem;
+    }
+  }
+
   .addr {
-    line-height: 2;
-    margin-bottom: 1rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
     .detail {
-      opacity: 0.6;
+      margin-top: 0.45rem;
+      font-size: 0.9rem;
+      .road-address,
+      .parcel-address {
+        display: block;
+        word-break: keep-all;
+      }
+      .parcel-address {
+        margin-top: 0.15rem;
+        color: var(--alt-color);
+        font-size: 0.88rem;
+      }
     }
   }
 

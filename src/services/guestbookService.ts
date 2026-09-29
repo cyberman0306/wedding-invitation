@@ -4,14 +4,18 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  startAfter,
   updateDoc,
   where,
   type Timestamp,
+  type DocumentData,
+  type QueryDocumentSnapshot,
 } from "firebase/firestore"
 import { GUESTBOOK_MODE } from "../env"
 import { requireFirebase } from "../firebase/firebase"
@@ -27,6 +31,16 @@ export type GuestbookPost = {
   message: string
   createdAt: number
   hidden: boolean
+}
+
+export const GUESTBOOK_PAGE_SIZE = 5
+
+export type GuestbookCursor = QueryDocumentSnapshot<DocumentData> | number | null
+
+export type GuestbookPage = {
+  posts: GuestbookPost[]
+  nextCursor: GuestbookCursor
+  hasMore: boolean
 }
 
 type ArchivePost = {
@@ -71,13 +85,25 @@ const loadArchive = async (): Promise<GuestbookPost[]> => {
     .sort((a, b) => b.createdAt - a.createdAt)
 }
 
+let archivePostsPromise: Promise<GuestbookPost[]> | null = null
+
+const getArchivePosts = () => {
+  archivePostsPromise ??= loadArchive().catch((error) => {
+    archivePostsPromise = null
+    throw error
+  })
+  return archivePostsPromise
+}
+
 /** 현재 모드에 맞춰 방명록을 구독합니다. */
 export const subscribeGuestbook = (
   onPosts: (posts: GuestbookPost[]) => void,
   onError: (error: Error) => void,
 ) => {
   if (GUESTBOOK_MODE === "archive") {
-    loadArchive().then(onPosts).catch(onError)
+    getArchivePosts()
+      .then((posts) => onPosts(posts.slice(0, 3)))
+      .catch(onError)
     return () => undefined
   }
 
@@ -86,7 +112,7 @@ export const subscribeGuestbook = (
     collection(db, "guestbook"),
     where("hidden", "==", false),
     orderBy("createdAt", "desc"),
-    limit(200),
+    limit(3),
   )
   return onSnapshot(
     guestbookQuery,
@@ -96,6 +122,39 @@ export const subscribeGuestbook = (
       ),
     (error) => onError(error),
   )
+}
+
+/** 전체보기 모달에서 오래된 글을 커서 기준으로 한 페이지씩 읽습니다. */
+export const getGuestbookPage = async (
+  cursor: GuestbookCursor = null,
+): Promise<GuestbookPage> => {
+  if (GUESTBOOK_MODE === "archive") {
+    const posts = await getArchivePosts()
+    const start = typeof cursor === "number" ? cursor : 0
+    const pagePosts = posts.slice(start, start + GUESTBOOK_PAGE_SIZE)
+    const next = start + pagePosts.length
+    return {
+      posts: pagePosts,
+      nextCursor: next,
+      hasMore: next < posts.length,
+    }
+  }
+
+  const { db } = requireFirebase()
+  const constraints = [
+    where("hidden", "==", false),
+    orderBy("createdAt", "desc"),
+    ...(cursor && typeof cursor !== "number" ? [startAfter(cursor)] : []),
+    limit(GUESTBOOK_PAGE_SIZE + 1),
+  ]
+  const snapshot = await getDocs(query(collection(db, "guestbook"), ...constraints))
+  const visibleDocs = snapshot.docs.slice(0, GUESTBOOK_PAGE_SIZE)
+
+  return {
+    posts: visibleDocs.map((item) => fromFirestore(item.id, item.data())),
+    nextCursor: visibleDocs[visibleDocs.length - 1] ?? null,
+    hasMore: snapshot.docs.length > GUESTBOOK_PAGE_SIZE,
+  }
 }
 
 /** 방문자가 새 축하 메시지를 작성합니다. */

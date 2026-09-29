@@ -2,11 +2,17 @@
   .ktalk-share {
     position: relative;
     z-index: 3;
-    font-size: 0.8rem;
-    display: inline-block;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--light-grey-color);
+    background-color: var(--alt-bg-color);
     img {
-      width: 0.7rem;
-      height: 0.7rem;
+      width: 0.85rem;
+      height: 0.85rem;
     }
   }
 }
