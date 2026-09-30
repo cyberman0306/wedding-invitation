@@ -125,6 +125,49 @@
           outline: none;
         }
       }
+
+      .form-error {
+        margin: 0.3rem 0 0;
+        color: #965454;
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+
+      &.confirmation-content {
+        gap: 0.9rem;
+        padding: 0 1rem 1.2rem;
+        text-align: center;
+
+        .confirmation-note,
+        .success-message {
+          margin: 0;
+          font-size: 0.85rem;
+          line-height: 1.7;
+          word-break: keep-all;
+        }
+
+        .confirmation-preview {
+          padding: 1rem;
+          max-height: 12rem;
+          overflow-y: auto;
+          background-color: var(--alt-bg-color);
+          border-radius: 0.2rem;
+          text-align: left;
+
+          .preview-name {
+            margin-bottom: 0.5rem;
+            color: var(--theme-color);
+            font-size: 0.9rem;
+          }
+
+          .preview-message {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+          }
+        }
+      }
     }
 
     .footer {
@@ -132,6 +175,14 @@
       flex-direction: row;
       button {
         width: 100%;
+        min-width: 0;
+        white-space: nowrap;
+        font-size: 0.9rem;
+
+        &:disabled {
+          opacity: 0.55;
+          cursor: wait;
+        }
       }
     }
   }
