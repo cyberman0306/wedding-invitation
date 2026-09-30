@@ -9,6 +9,7 @@ import { Information } from "./component/information"
 import { GuestBook } from "./component/guestbook"
 import { LazyDiv } from "./component/lazyDiv"
 import { ShareButton } from "./component/shareButton"
+import { MusicCredit, MusicPlayer } from "./component/musicPlayer"
 
 /**
  * 메인 애플리케이션 컴포넌트입니다.
@@ -21,6 +22,7 @@ function App() {
     <div className="background">
       {/* 은은한 흰 꽃잎 배경 효과 */}
       <BGEffect />
+      <MusicPlayer />
       <div className="card-view">
         <LazyDiv className="card-group">
           {/* 메인 커버 섹션 */}
@@ -52,6 +54,7 @@ function App() {
 
         {/* 카카오톡/링크 공유 버튼 */}
         <ShareButton />
+        <MusicCredit />
       </div>
     </div>
   )

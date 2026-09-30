@@ -60,6 +60,18 @@ export const WREATH_ORDER_URL =
   "https://smartstore.naver.com/honeyflowershop/products/4865184709"
 
 /**
+ * 배경 음악 설정. 웹 공개 사용이 허용된 음원만 public/music/에 넣습니다.
+ * 파일명을 빈 문자열로 바꾸면 재생 버튼과 저작권 표시가 함께 사라집니다.
+ */
+export const WEDDING_MUSIC_TITLE = "Dellasera"
+export const WEDDING_MUSIC_FILE = "dellasera-optimized.mp3"
+export const WEDDING_MUSIC_ARTIST = "Shane Ivers"
+export const WEDDING_MUSIC_SOURCE_URL =
+  "https://www.silvermansound.com/free-music/dellasera"
+export const WEDDING_MUSIC_LICENSE_URL =
+  "https://creativecommons.org/licenses/by/4.0/"
+
+/**
  * 지도 서비스(네이버, 카카오)에 사용할 좌표 [경도, 위도]
  */
 export const WEDDING_HALL_POSITION = [126.72258238031, 37.526303002436]
