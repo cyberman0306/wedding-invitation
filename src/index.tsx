@@ -12,8 +12,17 @@ const isAdminPage = window.location.pathname
   .replace(/\/$/, "")
   .endsWith("/admin")
 const searchParams = new URLSearchParams(window.location.search)
-const isDesignCompare = searchParams.get("compare") === "1"
-const design = searchParams.get("design")
+// 시안은 로컬 개발 환경에서만 열고, 배포 사이트에서는 기본 청첩장을 표시합니다.
+const previewsEnabled = import.meta.env.DEV
+const isDesignCompare = previewsEnabled && searchParams.get("compare") === "1"
+const design = previewsEnabled ? searchParams.get("design") : null
+if (!previewsEnabled && (searchParams.has("compare") || searchParams.has("design"))) {
+  const url = new URL(window.location.href)
+  url.searchParams.delete("compare")
+  url.searchParams.delete("design")
+  if (url.hash.startsWith("#design-")) url.hash = ""
+  window.history.replaceState(null, "", url)
+}
 const previewDesigns = [
   "paper",
   "cinema",
