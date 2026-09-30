@@ -12,15 +12,22 @@ const isAdminPage = window.location.pathname
 const searchParams = new URLSearchParams(window.location.search)
 const isDesignCompare = searchParams.get("compare") === "1"
 const design = searchParams.get("design")
+const previewDesigns = [
+  "paper",
+  "cinema",
+  "editorial",
+  "aurora",
+  "letter",
+  "ivory",
+  "ink",
+]
 
 // 시안 URL에서만 디자인을 바꿉니다. 기본 청첩장 및 QR 주소는 그대로 유지됩니다.
 if (
   !isAdminPage &&
   !isDesignCompare &&
-  (design === "ivory" ||
-    design === "ink" ||
-    design === "paper" ||
-    design === "cinema")
+  design &&
+  previewDesigns.includes(design)
 ) {
   document.documentElement.dataset.design = design
 }

@@ -1,0 +1,518 @@
+/**
+ * 편지 시안입니다. 봉투의 접힌 면, 인화 사진, 밀랍 인장을 CSS로 표현합니다.
+ * 실제 기능은 공통 컴포넌트를 그대로 사용하고 종이의 표면만 바꿉니다.
+ */
+@mixin styles {
+  html[data-design="letter"],
+  .design-compare__sample[data-design="letter"] {
+    --theme-color: #854f53;
+    --theme-bg-color: #d8c5bd;
+    --alt-color: #795f58;
+    --alt-bg-color: #efe3d9;
+    --dark-color: #352a29;
+    --dark-grey-color: #b9a9a0;
+    --light-grey-color: #ded0c5;
+    --light-color: #fbf6ed;
+    --white-color: #fffaf2;
+    --red-color: #a4544b;
+
+    .cover {
+      isolation: isolate;
+      overflow: hidden;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1.25rem 1.05rem 3.7rem;
+      border: 1px solid #d1bfb0;
+      background-color: #f8f0e5;
+      background-image:
+        linear-gradient(
+          151deg,
+          rgba(169, 126, 109, 0.11) 0 14%,
+          transparent 14.2%
+        ),
+        linear-gradient(
+          209deg,
+          rgba(169, 126, 109, 0.11) 0 14%,
+          transparent 14.2%
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(117, 81, 67, 0.018) 0,
+          rgba(117, 81, 67, 0.018) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      box-shadow: 0.25rem 0.3rem 0 #bda99e;
+
+      // 이중 선을 찍어 넣은 편지지의 가장자리입니다.
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0.65rem;
+        z-index: 0;
+        border: 1px solid rgba(133, 79, 83, 0.3);
+        pointer-events: none;
+      }
+
+      // 아래쪽의 밀랍 인장은 텍스트와 조작 영역을 가리지 않습니다.
+      &::after {
+        content: "✦";
+        position: absolute;
+        right: 1.6rem;
+        bottom: 0.85rem;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        width: 2.55rem;
+        height: 2.55rem;
+        border: 0.19rem double rgba(255, 240, 218, 0.58);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 28% 23%,
+          #bb7a72,
+          #874e50 62%,
+          #663b41
+        );
+        box-shadow:
+          0 0.08rem 0.12rem rgba(255, 246, 224, 0.55) inset,
+          0 0.18rem 0.35rem rgba(79, 46, 49, 0.3);
+        color: #f7e9d5;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.15rem;
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      .wedding-date,
+      .wedding-day-of-week,
+      .image-wrapper,
+      .subtitle,
+      .names,
+      .info {
+        position: relative;
+        z-index: 1;
+      }
+
+      .wedding-date {
+        align-self: flex-end;
+        gap: 0.27rem;
+        width: 5.1rem;
+        height: 5.1rem;
+        flex: 0 0 auto;
+        margin: 0.15rem 0.4rem -0.55rem 0;
+        border: 1px dashed #a77e75;
+        border-radius: 50%;
+        background: rgba(255, 250, 241, 0.68);
+        color: #82555a;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.64rem;
+        letter-spacing: 0.03em;
+        transform: rotate(12deg);
+
+        .divider {
+          width: 1px;
+          height: 0.55rem;
+          background: #b9908a;
+        }
+      }
+
+      .wedding-day-of-week {
+        align-self: flex-end;
+        margin: 0 0.55rem 0.4rem 0;
+        color: #926761;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.57rem;
+        font-style: italic;
+        letter-spacing: 0.13em;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        display: block;
+        width: min(calc(100% - 2rem), 20rem);
+        height: clamp(17rem, 42svh, 22rem);
+        flex: 0 0 auto;
+        margin: 0.4rem auto 0.15rem 0.7rem;
+        overflow: visible;
+        border: 0.55rem solid #fffdf6;
+        border-bottom-width: 1.35rem;
+        background: #fffdf6;
+        box-shadow:
+          0 0 0 1px rgba(89, 68, 59, 0.12),
+          0.45rem 0.7rem 1.2rem rgba(83, 60, 54, 0.24);
+        transform: rotate(-4deg);
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: -0.9rem;
+          left: -1.1rem;
+          z-index: 2;
+          width: 4rem;
+          height: 1.1rem;
+          border-inline: 1px dashed rgba(116, 95, 78, 0.24);
+          background: rgba(220, 200, 174, 0.68);
+          box-shadow: 0 0.06rem 0.1rem rgba(95, 71, 61, 0.13);
+          transform: rotate(-27deg);
+          pointer-events: none;
+        }
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 39%;
+        }
+      }
+
+      .subtitle {
+        margin: 1.25rem 0 0;
+        color: #8d5a60;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.67rem;
+        font-style: italic;
+        letter-spacing: 0.11em;
+        line-height: 1.5;
+      }
+
+      .names {
+        gap: 0.42rem;
+        margin: 0.45rem 0 0.65rem;
+        color: #42332e;
+        font-family: "AppleMyungjo", "Noto Serif KR", Georgia, serif;
+        font-size: clamp(1.38rem, 5.5vw, 1.8rem);
+        font-weight: normal;
+        letter-spacing: -0.04em;
+        line-height: 1.25;
+        white-space: nowrap;
+
+        .divider {
+          width: 1.4rem;
+          height: auto;
+          flex: 0 0 1.4rem;
+          background: transparent;
+
+          &::after {
+            content: "&";
+            color: #aa7472;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.05rem;
+            font-style: italic;
+          }
+        }
+      }
+
+      .info {
+        margin: 0 0 0.26rem;
+        color: #72584f;
+        font-size: 0.74rem;
+        line-height: 1.5;
+        opacity: 1;
+        word-break: keep-all;
+      }
+    }
+  }
+
+  html[data-design="letter"] {
+    body,
+    .background {
+      background: #d8c5bd;
+    }
+
+    .background {
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(117, 81, 67, 0.018) 0 1px,
+          transparent 1px 5px
+        ),
+        linear-gradient(#e4d4c9, #d8c5bd);
+
+      .card-view {
+        width: min(calc(100% - 1.2rem), 61.25rem);
+        padding: 0.8rem 0 1.2rem;
+        background: transparent;
+        box-shadow: none;
+
+        .card-group {
+          gap: 0.8rem;
+          margin: 0 0 0.8rem;
+          background: transparent;
+          box-shadow: none;
+
+          .card {
+            min-width: 0;
+            width: calc(50% - 0.4rem);
+            border: 1px solid #dccdc0;
+            background: #fbf6ed;
+            box-shadow:
+              0.23rem 0.28rem 0 #c1aca2,
+              0 0.8rem 1.4rem rgba(88, 58, 54, 0.1);
+
+            @media (max-width: 980px) {
+              width: 100%;
+              margin: 0;
+              padding: 3.2rem 1.3rem;
+            }
+
+            &.cover {
+              padding: 1.25rem 1.05rem 3.7rem;
+              background-color: #f8f0e5;
+            }
+          }
+
+          &:nth-of-type(odd) > .card,
+          &:nth-of-type(even) > .card {
+            background-color: #fbf6ed;
+          }
+
+          .card.cover {
+            background-color: #f8f0e5;
+          }
+        }
+
+        .footer {
+          border: 1px solid #dccdc0;
+          background: #f8f0e5;
+          box-shadow: 0.23rem 0.28rem 0 #c1aca2;
+        }
+      }
+    }
+
+    .card > h2.english {
+      margin: 0 0 1.2rem;
+      color: #8a565b;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      letter-spacing: 0.025em;
+      line-height: 1.4;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 2.8rem;
+        height: 1px;
+        margin: 0.9rem auto 0;
+        background: #bd9b8f;
+      }
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.45rem;
+        line-height: 1.95;
+      }
+
+      .name {
+        line-height: 1.8;
+      }
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.4rem 0.25rem;
+      padding: 0.3rem;
+      border: 1px dashed #c6aca4;
+      background: #f8eee3;
+
+      > div.head {
+        background: transparent;
+        color: #80625d;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.72rem;
+      }
+
+      > div.wedding-date {
+        > span {
+          color: #fff8ec;
+        }
+
+        > div.heart {
+          top: 9%;
+          left: 9%;
+          width: 82%;
+          height: 82%;
+          border-radius: 50%;
+          background: #985d62;
+          transform: none;
+
+          &::before,
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: #8b5258;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+    }
+
+    .gallery .carousel-wrapper {
+      .carousel {
+        width: min(21rem, 100%);
+        max-width: 100%;
+      }
+
+      .carousel-item img {
+        max-width: calc(100% - 0.5rem);
+        max-height: calc(100% - 0.5rem);
+        border: 0.32rem solid #fffaf2;
+        border-bottom-width: 0.85rem;
+        background: #fffaf2;
+        box-shadow: 0 0.35rem 0.9rem rgba(75, 47, 47, 0.17);
+      }
+
+      .carousel-indicator .indicator.active::before {
+        background: #985d62;
+      }
+    }
+
+    .location {
+      .map-wrapper {
+        border: 0.38rem solid #fffaf2;
+        box-shadow:
+          0 0 0 1px #cab5a9,
+          0.25rem 0.3rem 0 #e1cfc2;
+      }
+
+      .navigation {
+        margin-top: 0.7rem;
+        border: 1px solid #ddc8b9;
+        background: #f2e4d8;
+      }
+    }
+
+    .information .info-card {
+      border-top: 1px solid #c9aaa0;
+
+      .label {
+        color: #87565a;
+      }
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      margin-top: 0.75rem;
+      border: 1px solid #e1d0c3;
+      border-left: 0.2rem solid #a87576;
+      background: #f8efe5;
+      box-shadow: 0.13rem 0.16rem 0 #e4d4c7;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link,
+    .share-button .ktalk-share {
+      min-height: 2.85rem;
+      border: 1px solid #ae8981;
+      border-radius: 0.1rem;
+      background: #fbf3e8;
+      color: #533d3b;
+      box-shadow: 0 0.14rem 0 #ddc9b9;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible,
+    .share-button .ktalk-share:hover,
+    .share-button .ktalk-share:focus-visible {
+      background: #f0e1d4;
+      outline: 2px solid #8d575c;
+      outline-offset: 0.15rem;
+    }
+
+    button.button.button-style-2 {
+      background: #865258;
+      color: #fffaf2;
+    }
+
+    .modal-background > .modal {
+      border: 1px solid #d8c2b6;
+      border-radius: 0.12rem;
+      background: #fbf6ed;
+      box-shadow: 0 1.25rem 3.5rem rgba(51, 29, 28, 0.26);
+    }
+
+    @media (max-width: 500px) {
+      .background .card-view {
+        width: 100%;
+        padding: 0.4rem 0.45rem 1rem;
+
+        .card-group .card.cover {
+          padding: 0.8rem 0.7rem 3.5rem;
+        }
+      }
+
+      .cover .image-wrapper {
+        height: clamp(17rem, 39svh, 21rem);
+      }
+    }
+  }
+
+  .design-compare__sample[data-design="letter"] {
+    border: 1px solid #bda79d;
+    background: #dfcdc3;
+    box-shadow:
+      0.32rem 0.38rem 0 #bfa79c,
+      0 1.1rem 2.5rem rgba(87, 58, 54, 0.16);
+
+    .design-compare__paper {
+      overflow: hidden;
+      background: #f8f0e5;
+
+      .cover {
+        padding: 0.7rem 0.65rem 3rem;
+        background-color: #f8f0e5;
+
+        .wedding-date {
+          width: 4.6rem;
+          height: 4.6rem;
+          margin-top: 0;
+          font-size: 0.57rem;
+        }
+
+        .image-wrapper {
+          width: min(calc(100% - 1.6rem), 18rem);
+          height: 18.5rem;
+          margin-left: 0.45rem;
+        }
+
+        .names {
+          font-size: 1.35rem;
+        }
+
+        .info {
+          font-size: 0.72rem;
+        }
+      }
+
+      .design-compare__invitation {
+        border-top: 1px solid #d1bfb0;
+        background: #fbf6ed;
+
+        > span {
+          color: #87565a;
+          font-family: Georgia, "Times New Roman", serif;
+          font-size: 1.25rem;
+          font-style: italic;
+        }
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-design="letter"] .background .card-view {
+      .card-group,
+      .card-group .card,
+      .card-group .card.invitation > :not(h2),
+      .footer {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+}

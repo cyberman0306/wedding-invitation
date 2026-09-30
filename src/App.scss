@@ -12,6 +12,9 @@
 @use "./designThemes" as designThemes;
 @use "./themes/paper" as paper;
 @use "./themes/cinema" as cinema;
+@use "./themes/editorial" as editorial;
+@use "./themes/aurora" as aurora;
+@use "./themes/letter" as letter;
 
 :root {
   --theme-color: #a88750;
@@ -256,3 +259,6 @@ div.break {
 @include designThemes.styles();
 @include paper.styles();
 @include cinema.styles();
+@include editorial.styles();
+@include aurora.styles();
+@include letter.styles();

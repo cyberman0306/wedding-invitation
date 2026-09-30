@@ -1,0 +1,537 @@
+/**
+ * 오로라 글라스 시안입니다. 초상화와 초대 문구를 각각 유리 패널에 올리고,
+ * 뒤쪽의 빛은 CSS 그라데이션으로만 그려 실제 사진과 조작 영역을 가리지 않습니다.
+ */
+@mixin styles {
+  html[data-design="aurora"],
+  .design-compare__sample[data-design="aurora"] {
+    --theme-color: #e7c98d;
+    --theme-bg-color: #0c1729;
+    --alt-color: #c8d6dd;
+    --alt-bg-color: #23384b;
+    --dark-color: #f5f3ef;
+    --dark-grey-color: #9baab6;
+    --light-grey-color: #52677a;
+    --light-color: #17283b;
+    --white-color: #1c3044;
+    --red-color: #f3a9a9;
+
+    .cover {
+      isolation: isolate;
+      position: relative;
+      align-items: center;
+      overflow: hidden;
+      min-width: 0;
+      min-height: 39rem;
+      padding: 2.5rem 1.25rem 2rem;
+      border: 1px solid rgba(230, 217, 183, 0.3);
+      border-radius: 1.5rem;
+      background:
+        radial-gradient(
+          circle at 12% 26%,
+          rgba(51, 208, 192, 0.36),
+          transparent 34%
+        ),
+        radial-gradient(
+          circle at 90% 7%,
+          rgba(134, 95, 179, 0.5),
+          transparent 36%
+        ),
+        radial-gradient(
+          circle at 83% 63%,
+          rgba(54, 125, 164, 0.24),
+          transparent 36%
+        ),
+        linear-gradient(150deg, #13283d 0%, #0b162b 66%, #111b35 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        0 1.4rem 3.4rem rgba(2, 8, 21, 0.42);
+      text-align: center;
+
+      // 광원은 내용보다 뒤에 있고 클릭을 받지 않습니다.
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        width: 24rem;
+        height: 24rem;
+        top: 6rem;
+        right: -11rem;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(104, 211, 217, 0.43),
+          transparent 69%
+        );
+        filter: blur(1.5rem);
+        pointer-events: none;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        inset: 0.55rem;
+        border: 1px solid rgba(235, 232, 215, 0.18);
+        border-radius: 1.1rem;
+        pointer-events: none;
+      }
+
+      > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .wedding-date {
+        gap: 0.6rem;
+        margin: 0.2rem 0 0;
+        color: #efe4c9;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.15rem;
+        letter-spacing: 0.15em;
+        line-height: 1.15;
+
+        .divider {
+          height: 0.7rem;
+          background: rgba(231, 201, 141, 0.7);
+        }
+      }
+
+      .wedding-day-of-week {
+        margin: 0.55rem 0 1.6rem;
+        color: #d9d8d7;
+        font-family: Arial, sans-serif;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 0.35em;
+        line-height: 1.5;
+        text-transform: uppercase;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        width: min(79%, 19rem);
+        height: clamp(17rem, 45svh, 24rem);
+        margin: 0 auto;
+        overflow: hidden;
+        border: 0.3rem solid rgba(241, 239, 225, 0.8);
+        border-radius: 50%;
+        background: #406c7f;
+        box-shadow:
+          0 0 0 1px rgba(245, 227, 188, 0.72),
+          0 0 0 0.55rem rgba(250, 250, 255, 0.07),
+          0 1.2rem 2.4rem rgba(0, 8, 22, 0.56),
+          0 0 3.2rem rgba(102, 219, 219, 0.23);
+
+        &::after {
+          content: "";
+          position: absolute;
+          inset: 0.5rem;
+          border: 1px solid rgba(248, 238, 211, 0.72);
+          border-radius: 50%;
+          pointer-events: none;
+        }
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 25%;
+        }
+      }
+
+      .subtitle {
+        width: fit-content;
+        max-width: 100%;
+        margin: -0.75rem auto 0;
+        padding: 0.55rem 0.9rem;
+        border: 1px solid rgba(235, 224, 196, 0.48);
+        border-radius: 2rem;
+        background: rgba(13, 30, 51, 0.84);
+        box-shadow: 0 0.4rem 1rem rgba(0, 8, 24, 0.32);
+        color: #f3e8d0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.025em;
+        line-height: 1.25;
+      }
+
+      .names {
+        gap: 0.65rem;
+        margin: 1.1rem 0 0.65rem;
+        color: #fffaf0;
+        font-family: "AppleMyungjo", "Noto Serif KR", Georgia, serif;
+        font-size: 1.48rem;
+        letter-spacing: -0.025em;
+        line-height: 1.3;
+        white-space: nowrap;
+
+        .divider {
+          width: 1.25rem;
+          height: 1px;
+          background: #e7c98d;
+        }
+      }
+
+      .info {
+        margin: 0 0 0.25rem;
+        color: #e6e7e9;
+        font-size: 0.74rem;
+        letter-spacing: 0.02em;
+        line-height: 1.6;
+        opacity: 1;
+        word-break: keep-all;
+      }
+    }
+  }
+
+  html[data-design="aurora"] {
+    body,
+    .background {
+      background-color: #0c1729;
+    }
+
+    .background {
+      background-image:
+        radial-gradient(
+          ellipse at 15% 6%,
+          rgba(58, 154, 160, 0.28),
+          transparent 25rem
+        ),
+        radial-gradient(
+          ellipse at 82% 26%,
+          rgba(104, 84, 164, 0.23),
+          transparent 32rem
+        ),
+        radial-gradient(
+          ellipse at 24% 77%,
+          rgba(21, 125, 130, 0.16),
+          transparent 24rem
+        );
+
+      .card-view {
+        width: min(calc(100% - 1.3rem), 60rem);
+        padding: 0.7rem 0 1.5rem;
+        background: transparent;
+        box-shadow: none;
+
+        .card-group {
+          gap: 0.75rem;
+          margin: 0 0 0.8rem;
+          background: transparent;
+          box-shadow: none;
+
+          .card {
+            min-width: 0;
+            border: 1px solid rgba(215, 233, 235, 0.25);
+            border-radius: 1.25rem;
+            background: linear-gradient(
+              145deg,
+              rgba(37, 62, 79, 0.93),
+              rgba(18, 34, 53, 0.96)
+            );
+            box-shadow:
+              inset 0 1px 0 rgba(255, 255, 255, 0.12),
+              0 1rem 2.5rem rgba(0, 6, 20, 0.25);
+
+            &:only-child {
+              width: 100%;
+            }
+
+            @media (max-width: 980px) {
+              width: 100%;
+              margin: 0 0 0.8rem;
+              padding: 3.4rem 1.45rem;
+            }
+          }
+
+          &:nth-of-type(odd) > .card,
+          &:nth-of-type(even) > .card {
+            background: linear-gradient(
+              145deg,
+              rgba(37, 62, 79, 0.93),
+              rgba(18, 34, 53, 0.96)
+            );
+          }
+
+          .card.cover {
+            background:
+              radial-gradient(
+                circle at 12% 26%,
+                rgba(51, 208, 192, 0.36),
+                transparent 34%
+              ),
+              radial-gradient(
+                circle at 90% 7%,
+                rgba(134, 95, 179, 0.5),
+                transparent 36%
+              ),
+              radial-gradient(
+                circle at 83% 63%,
+                rgba(54, 125, 164, 0.24),
+                transparent 36%
+              ),
+              linear-gradient(150deg, #13283d 0%, #0b162b 66%, #111b35 100%);
+
+            @media (max-width: 980px) {
+              padding: 2.1rem 1.15rem 1.8rem;
+            }
+          }
+        }
+
+        .footer {
+          border: 1px solid rgba(215, 233, 235, 0.25);
+          border-radius: 1.2rem;
+          background: rgba(21, 40, 58, 0.95);
+          box-shadow: 0 1rem 2.5rem rgba(0, 6, 20, 0.25);
+        }
+      }
+    }
+
+    .bg-effect {
+      opacity: 0.52;
+      pointer-events: none;
+    }
+
+    .card > h2.english {
+      margin: 0 0 1.5rem;
+      color: #e7c98d;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      line-height: 1.5;
+      text-transform: uppercase;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 2rem;
+        height: 1px;
+        margin: 0.95rem auto 0;
+        background: #e7c98d;
+      }
+    }
+
+    .invitation .content {
+      line-height: 1.88;
+    }
+
+    .calendar .calendar-wrapper {
+      border: 1px solid #667d89;
+      background: rgba(8, 26, 44, 0.38);
+
+      > div.head {
+        background: #294055;
+      }
+
+      > div.wedding-date > div.heart {
+        background: #527d86;
+
+        &::before,
+        &::after {
+          background: #527d86;
+        }
+      }
+    }
+
+    .gallery .carousel-wrapper {
+      .carousel-item img {
+        border: 0.25rem solid rgba(245, 239, 224, 0.9);
+        border-radius: 0.65rem;
+        box-shadow: 0 0.85rem 2rem rgba(0, 9, 24, 0.42);
+      }
+
+      .carousel-indicator .indicator.active::before {
+        background: #e7c98d;
+      }
+    }
+
+    .location {
+      .map-wrapper {
+        overflow: hidden;
+        border: 1px solid rgba(233, 224, 192, 0.5);
+        border-radius: 0.8rem 0.8rem 0 0;
+      }
+
+      .navigation {
+        border: 1px solid rgba(233, 224, 192, 0.35);
+        border-top: 0;
+        border-radius: 0 0 0.8rem 0.8rem;
+        background: #253d52;
+      }
+    }
+
+    .information .content {
+      color: #dbe3e5;
+    }
+
+    .write-guestbook-modal .form-error {
+      color: #ffc4bb;
+    }
+
+    .information .info-card {
+      border-top-color: rgba(231, 201, 141, 0.5);
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      margin-top: 0.8rem;
+      border: 1px solid rgba(212, 229, 229, 0.25);
+      border-radius: 0.65rem;
+      background: #20384b;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link,
+    .share-button .ktalk-share {
+      min-height: 2.9rem;
+      border: 1px solid rgba(231, 201, 141, 0.7);
+      border-radius: 2rem;
+      background: #20394c;
+      color: #f9f4e7;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible,
+    .share-button .ktalk-share:hover,
+    .share-button .ktalk-share:focus-visible {
+      border-color: #f0dba7;
+      background: #315468;
+      outline: 2px solid #f0dba7;
+      outline-offset: 0.15rem;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 2rem;
+      background: #e7c98d;
+      color: #17283b;
+    }
+
+    .modal-background > .modal {
+      border: 1px solid rgba(229, 220, 192, 0.45);
+      border-radius: 0.85rem;
+      background: #17283b;
+      box-shadow: 0 1.4rem 4rem rgba(0, 5, 15, 0.55);
+
+      .header {
+        background: #17283b;
+      }
+    }
+
+    .attendance-form-modal input,
+    .write-guestbook-modal input,
+    .write-guestbook-modal textarea {
+      color: #f5f3ef;
+    }
+
+    @supports (backdrop-filter: blur(1px)) {
+      .background .card-view .card-group .card:not(.cover) {
+        background: rgba(27, 48, 67, 0.81);
+        backdrop-filter: blur(0.65rem);
+        -webkit-backdrop-filter: blur(0.65rem);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .background .card-view {
+        width: calc(100% - 0.65rem);
+        padding-top: 0.35rem;
+
+        .card-group .card.cover {
+          min-height: 37rem;
+          padding: 1.6rem 0.9rem 1.6rem;
+        }
+      }
+
+      .cover .image-wrapper {
+        width: min(78%, 18rem);
+        height: clamp(16rem, 42svh, 22rem);
+      }
+
+      .gallery .carousel-wrapper .carousel {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .design-compare__sample[data-design="aurora"] {
+    border: 1px solid rgba(231, 201, 141, 0.5);
+    border-radius: 1.4rem;
+    background: #102238;
+    box-shadow: 0 1.3rem 3.2rem rgba(10, 20, 40, 0.23);
+
+    .design-compare__heading {
+      .design-compare__number,
+      h2,
+      p {
+        color: #f4ead5;
+      }
+    }
+
+    .design-compare__paper {
+      border-radius: 1.15rem;
+      background: #0c1729;
+
+      .cover {
+        min-height: 31rem;
+        padding: 1.5rem 0.6rem 1.4rem;
+        border-radius: 1.15rem;
+
+        .wedding-date {
+          font-size: 0.9rem;
+        }
+
+        .wedding-day-of-week {
+          margin-bottom: 1.05rem;
+        }
+
+        .image-wrapper {
+          width: 78%;
+          height: 18rem;
+        }
+
+        .subtitle {
+          font-size: 0.6rem;
+        }
+
+        .names {
+          margin-top: 0.8rem;
+          font-size: 1.2rem;
+        }
+
+        .info {
+          font-size: 0.65rem;
+        }
+      }
+    }
+
+    .design-compare__invitation {
+      background: #1b3043;
+
+      > span {
+        color: #e7c98d;
+      }
+
+      p {
+        color: #eef1ec;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-design="aurora"] .background .card-view {
+      .card-group,
+      .card-group .card,
+      .card-group .card.invitation > :not(h2),
+      .footer {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  }
+}

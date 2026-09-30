@@ -26,7 +26,28 @@ const DAY_OF_WEEK = [
  */
 export const Cover = ({ design }: { design?: string }) => {
   const activeDesign = design ?? document.documentElement.dataset.design
-  const isCinema = activeDesign === "cinema"
+  const artwork: Record<string, { src: string; alt: string }> = {
+    cinema: {
+      src: GALLERY_IMAGES[2],
+      alt: `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}이 꽃 아치 아래에 앉아 있는 웨딩 일러스트`,
+    },
+    editorial: {
+      src: GALLERY_IMAGES[0],
+      alt: `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}의 웨딩 초상 일러스트`,
+    },
+    aurora: {
+      src: GALLERY_IMAGES[4],
+      alt: `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}이 샹들리에 아래에 앉아 있는 웨딩 일러스트`,
+    },
+    letter: {
+      src: GALLERY_IMAGES[7],
+      alt: `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}이 꽃길에서 포옹하는 일러스트`,
+    },
+  }
+  const coverArt = artwork[activeDesign ?? ""] ?? {
+    src: COVER_IMAGE,
+    alt: `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}의 웨딩 일러스트`,
+  }
 
   return (
     <LazyDiv className="card cover">
@@ -44,14 +65,7 @@ export const Cover = ({ design }: { design?: string }) => {
       </div>
       {/* 커버 이미지 */}
       <div className="image-wrapper">
-        <img
-          src={isCinema ? GALLERY_IMAGES[2] : COVER_IMAGE}
-          alt={
-            isCinema
-              ? `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}이 꽃 아치 아래에 앉아 있는 웨딩 일러스트`
-              : `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}의 웨딩 일러스트`
-          }
-        />
+        <img src={coverArt.src} alt={coverArt.alt} />
       </div>
       <div className="subtitle">Save the date for the wedding of</div>
       {/* 이름 표시 */}
