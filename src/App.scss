@@ -177,14 +177,36 @@ body {
           opacity: 0;
           &.lazy-active {
             animation-name: lazy-fade-in;
-            animation-duration: 3s;
+            animation-duration: 1.1s;
             opacity: 1;
+          }
+
+          &.invitation {
+            // 첫 화면 하단에 제목을 보여주고, 본문은 스크롤할 때 나타냅니다.
+            opacity: 1;
+
+            &.lazy-active {
+              animation: none;
+            }
+
+            > :not(h2) {
+              opacity: 0;
+            }
+
+            &.lazy-active > :not(h2) {
+              animation: lazy-fade-in 1.1s ease-out both;
+            }
           }
 
           @media print {
             opacity: 1;
             animation-name: inherit !important;
             animation-duration: inherit !important;
+
+            &.invitation > :not(h2) {
+              opacity: 1;
+              animation: none !important;
+            }
           }
         }
       }

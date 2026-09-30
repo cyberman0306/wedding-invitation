@@ -27,7 +27,7 @@ export const Invitation = () => {
   const contactModalState = useState(false)
   return (
     <>
-      <LazyDiv className="card invitation">
+      <LazyDiv className="card invitation" observerRootMargin="0px 0px -25% 0px">
         <h2 className="english">Invitation</h2>
 
         <div className="break" />
