@@ -2,7 +2,8 @@
   position: fixed;
   right: max(0.8rem, env(safe-area-inset-right));
   bottom: max(0.8rem, env(safe-area-inset-bottom));
-  z-index: 3;
+  // 본문과 스크롤 애니메이션 위, 모달 아래에 표시합니다.
+  z-index: 10;
 
   &__button {
     display: inline-flex;
