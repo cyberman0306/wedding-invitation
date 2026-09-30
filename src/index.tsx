@@ -20,6 +20,10 @@ const previewDesigns = [
   "letter",
   "ivory",
   "ink",
+  "rose-garden",
+  "pink-editorial",
+  "ribbon-note",
+  "berry-noir",
 ]
 
 // 시안 URL에서만 디자인을 바꿉니다. 기본 청첩장 및 QR 주소는 그대로 유지됩니다.

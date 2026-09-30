@@ -2,6 +2,12 @@ import { Cover } from "../component/cover"
 import "./designCompare.scss"
 
 const invitationUrl = import.meta.env.BASE_URL
+const pinkDesignIds = new Set([
+  "rose-garden",
+  "pink-editorial",
+  "ribbon-note",
+  "berry-noir",
+])
 
 const designs = [
   {
@@ -68,6 +74,38 @@ const designs = [
     description: "선명한 흑백 대비와 작은 골드 포인트",
     url: `${invitationUrl}?design=ink`,
   },
+  {
+    id: "rose-garden",
+    number: "09",
+    name: "로즈 가든",
+    shortName: "가든",
+    description: "연분홍 정원과 아치형 사진으로 여는 초대",
+    url: `${invitationUrl}?design=rose-garden`,
+  },
+  {
+    id: "pink-editorial",
+    number: "10",
+    name: "핑크 에디토리얼",
+    shortName: "매거진",
+    description: "라즈베리 색면과 대담한 글자의 리듬",
+    url: `${invitationUrl}?design=pink-editorial`,
+  },
+  {
+    id: "ribbon-note",
+    number: "11",
+    name: "리본 노트",
+    shortName: "리본",
+    description: "사진을 붙인 핑크빛 스크랩북 한 장",
+    url: `${invitationUrl}?design=ribbon-note`,
+  },
+  {
+    id: "berry-noir",
+    number: "12",
+    name: "베리 누아르",
+    shortName: "베리",
+    description: "진한 장밋빛과 가느다란 금빛 장식",
+    url: `${invitationUrl}?design=berry-noir`,
+  },
 ] as const
 
 /**
@@ -82,9 +120,9 @@ export const DesignCompare = () => (
       </span>
       <h1>우리의 청첩장, 어떤 분위기가 좋을까요?</h1>
       <p>
-        번호를 누르거나 아래로 넘기며 여덟 가지 표지를 비교해 보세요.
+        번호를 누르거나 아래로 넘기며 열두 가지 표지를 비교해 보세요.
         <br />각 시안의 전체보기에서는 사진, 지도, 방명록까지 기존 청첩장을
-        그대로 볼 수 있습니다.
+        그대로 볼 수 있습니다. 09~12번은 새로 만든 핑크 계열 시안입니다.
       </p>
       <a href={invitationUrl}>현재 청첩장으로 돌아가기</a>
     </header>
@@ -94,6 +132,9 @@ export const DesignCompare = () => (
         <a
           href={`#design-${id}`}
           aria-label={`${number} ${name} 시안으로 이동`}
+          className={
+            pinkDesignIds.has(id) ? "design-compare__picker-pink" : undefined
+          }
           key={id}
         >
           <span>{number}</span>
@@ -111,6 +152,9 @@ export const DesignCompare = () => (
           key={id}
         >
           <div className="design-compare__heading">
+            {pinkDesignIds.has(id) && (
+              <span className="design-compare__new">PINK COLLECTION</span>
+            )}
             <span className="design-compare__number">DESIGN {number}</span>
             <h2>{name}</h2>
             <p>{description}</p>

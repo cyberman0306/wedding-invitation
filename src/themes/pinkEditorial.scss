@@ -1,0 +1,545 @@
+/**
+ * 핑크 에디토리얼: 선명한 분홍 색면과 사진 위 타이포그래피를 겹친 표지.
+ * 기존 좌우 분할 시안과 달리 사진을 넓게 쓰고 이름을 하나의 밴드로 배치합니다.
+ */
+@mixin styles {
+  html[data-design="pink-editorial"],
+  .design-compare__sample[data-design="pink-editorial"] {
+    --theme-color: #c71d66;
+    --theme-bg-color: #ffc8da;
+    --alt-color: #764758;
+    --alt-bg-color: #ffe5ed;
+    --dark-color: #271923;
+    --dark-grey-color: #b78095;
+    --light-grey-color: #f1c4d2;
+    --light-color: #fff3f7;
+    --white-color: #fff9fb;
+    --red-color: #b6114d;
+
+    .cover {
+      isolation: isolate;
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+      align-content: start;
+      justify-content: stretch;
+      align-items: start;
+      min-width: 0;
+      overflow: hidden;
+      background: #ffe5ed;
+      text-align: left;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 0;
+        width: 30%;
+        height: 0.35rem;
+        background: #271923;
+        pointer-events: none;
+      }
+
+      .wedding-date {
+        position: relative;
+        z-index: 1;
+        grid-row: 1;
+        justify-content: flex-start;
+        gap: 0.2rem;
+        width: 100%;
+        min-width: 0;
+        margin: 0;
+        padding: 0.1rem 0 0.4rem;
+        border-bottom: 0.16rem solid #271923;
+        color: #c71d66;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: clamp(2rem, 7.8vw, 3.35rem);
+        font-weight: 800;
+        letter-spacing: -0.09em;
+        line-height: 1;
+        font-variant-numeric: lining-nums tabular-nums;
+        white-space: nowrap;
+
+        .divider {
+          width: 0.14rem;
+          height: 0.57em;
+          flex: 0 0 0.14rem;
+          margin-inline: 0.18rem;
+          background: #271923;
+          transform: rotate(25deg);
+        }
+      }
+
+      .wedding-day-of-week {
+        position: relative;
+        z-index: 1;
+        grid-row: 2;
+        justify-self: end;
+        margin: 0.42rem 0 0.65rem;
+        color: #271923;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.62rem;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        line-height: 1.2;
+        text-transform: uppercase;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        grid-row: 3;
+        grid-column: 1;
+        display: block;
+        width: calc(100% + 2.4rem);
+        height: clamp(20rem, 49svh, 27rem);
+        min-height: 0;
+        margin: 0 -1.2rem;
+        overflow: hidden;
+        border-top: 0.4rem solid #c71d66;
+        border-bottom: 0.4rem solid #271923;
+        background: #d49daa;
+        clip-path: polygon(0 2%, 100% 0, 100% 98%, 0 100%);
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 41%;
+          filter: saturate(0.86) contrast(1.05);
+        }
+      }
+
+      .subtitle {
+        z-index: 2;
+        grid-row: 3;
+        grid-column: 1;
+        align-self: start;
+        justify-self: start;
+        max-width: 12rem;
+        margin: 1.2rem 0 0 -0.5rem;
+        padding: 0.38rem 0.6rem;
+        background: #fff9fb;
+        box-shadow: 0.22rem 0.25rem 0 #271923;
+        color: #a41b57;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.61rem;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        line-height: 1.3;
+        text-transform: uppercase;
+      }
+
+      .names {
+        position: relative;
+        z-index: 2;
+        grid-row: 3;
+        grid-column: 1;
+        align-self: end;
+        justify-self: start;
+        gap: 0.55rem;
+        width: max-content;
+        max-width: calc(100% + 0.7rem);
+        margin: 0 0 0.9rem -0.55rem;
+        padding: 0.68rem 0.9rem 0.62rem;
+        background: #c71d66;
+        box-shadow: 0.25rem 0.28rem 0 #271923;
+        color: #fff9fb;
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        font-size: clamp(1.4rem, 5.7vw, 2.1rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        white-space: nowrap;
+        transform: rotate(-2deg);
+
+        .divider {
+          width: 0.8rem;
+          height: 0.14rem;
+          flex: 0 0 0.8rem;
+          background: #fff9fb;
+          transform: rotate(-27deg);
+        }
+      }
+
+      .info {
+        position: relative;
+        z-index: 1;
+        grid-column: 1;
+        min-width: 0;
+        width: 100%;
+        margin: 0;
+        color: #271923;
+        font-family: Arial, "Apple SD Gothic Neo", sans-serif;
+        font-size: 0.86rem;
+        font-weight: 600;
+        letter-spacing: 0.015em;
+        line-height: 1.45;
+        opacity: 1;
+        word-break: keep-all;
+      }
+
+      .info:nth-last-child(2) {
+        grid-row: 4;
+        margin-top: 0.75rem;
+        padding-top: 0.6rem;
+        border-top: 0.15rem solid #c71d66;
+      }
+
+      .info:last-child {
+        grid-row: 5;
+        padding-top: 0.2rem;
+        color: #9e2457;
+      }
+    }
+  }
+
+  html[data-design="pink-editorial"] {
+    body,
+    .background {
+      background: #e62a76;
+    }
+
+    .background {
+      background-image: linear-gradient(
+        155deg,
+        #ef5996 0,
+        #c71961 48%,
+        #861146 100%
+      );
+
+      .card-view {
+        background: #fff3f7;
+        box-shadow: 0 1.2rem 3rem rgba(75, 8, 40, 0.18);
+
+        .card-group {
+          @media (width > 980px) {
+            gap: 0;
+            margin: 0 0 0.8rem;
+            box-shadow: 0.35rem 0.4rem 0 rgba(39, 25, 35, 0.8);
+          }
+
+          .card,
+          &:nth-of-type(odd) > .card,
+          &:nth-of-type(even) > .card {
+            background: #fff3f7;
+          }
+
+          .card {
+            min-width: 0;
+
+            @media (max-width: 980px) {
+              width: 100%;
+              padding: 4rem 1.35rem;
+              border-bottom: 0.15rem solid #271923;
+            }
+          }
+
+          .card.cover {
+            display: grid;
+            justify-content: stretch;
+            align-content: start;
+            background: #ffe5ed;
+
+            @media (max-width: 980px) {
+              padding: 1rem 1.2rem 1.25rem;
+            }
+          }
+
+          .card.invitation {
+            background: #c71d66;
+
+            .content,
+            .name,
+            .name .relation,
+            .name .relation-name {
+              color: #fff9fb;
+            }
+
+            h2.english {
+              border-color: #fff9fb;
+              color: #fff9fb;
+
+              &::after {
+                background: #fff9fb;
+              }
+            }
+
+            button.button.button-style-1 {
+              border-color: #fff9fb;
+              background: #fff9fb;
+              color: #8d174a;
+            }
+          }
+
+          .card.gallery {
+            background: #ffd7e4;
+          }
+        }
+
+        .footer {
+          border-top: 0.35rem solid #c71d66;
+          background: #ffe5ed;
+        }
+      }
+    }
+
+    .card > h2.english {
+      align-self: stretch;
+      width: 100%;
+      margin: 0 0 1.85rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 0.15rem solid #271923;
+      color: #271923;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      line-height: 1.15;
+      text-align: left;
+      text-transform: uppercase;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 2.3rem;
+        height: 0.22rem;
+        margin: 0.55rem 0 -0.67rem;
+        background: #c71d66;
+      }
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.55rem;
+        line-height: 1.85;
+      }
+
+      .name {
+        line-height: 1.75;
+      }
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.3rem 0 1.7rem;
+      border: 0.15rem solid #271923;
+
+      > div.head {
+        background: #271923;
+
+        > span {
+          color: #fff9fb;
+        }
+      }
+
+      > div.wedding-date {
+        > span {
+          color: #fff9fb;
+        }
+
+        > div.heart {
+          top: 8%;
+          left: 8%;
+          width: 84%;
+          height: 84%;
+          border-radius: 0;
+          background: #c71d66;
+          transform: rotate(-6deg);
+
+          &::before,
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: #c71d66;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .gallery .carousel-item img {
+      border: 0.35rem solid #fff9fb;
+      box-shadow:
+        0 0 0 0.14rem #271923,
+        0.4rem 0.45rem 0 #c71d66;
+    }
+
+    .gallery .carousel-indicator .indicator.active::before {
+      border-radius: 0;
+      background: #c71d66;
+    }
+
+    .location {
+      .map-wrapper {
+        border: 0.18rem solid #271923;
+        box-shadow: 0.28rem 0.3rem 0 #e86d9e;
+      }
+
+      .navigation {
+        margin-top: 0.8rem;
+        border: 0.12rem solid #271923;
+        background: #ffe5ed;
+      }
+
+      .location-info .heading {
+        color: #aa1a57;
+        font-weight: 700;
+      }
+    }
+
+    .information .info-card {
+      border-top: 0.16rem solid #271923;
+
+      .label {
+        color: #c71d66;
+        font-family: Arial, "Apple SD Gothic Neo", sans-serif;
+        font-size: 1.13rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      margin-top: 0.65rem;
+      border: 0;
+      border-left: 0.34rem solid #c71d66;
+      background: #ffe5ed;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link,
+    .share-button .ktalk-share {
+      min-height: 2.85rem;
+      border: 0.12rem solid #271923;
+      border-radius: 0;
+      background: #c71d66;
+      color: #fff9fb;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible,
+    .share-button .ktalk-share:hover,
+    .share-button .ktalk-share:focus-visible {
+      background: #a71a56;
+      outline: 0.12rem solid #271923;
+      outline-offset: 0.12rem;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 0;
+      background: #271923;
+      color: #fff9fb;
+    }
+
+    .modal-background > .modal {
+      border: 0.15rem solid #271923;
+      border-radius: 0;
+      background: #fff3f7;
+      box-shadow: 0.45rem 0.5rem 0 #c71d66;
+    }
+
+    @media (max-width: 500px) {
+      .background .card-view {
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .background .card-view .card-group .card.cover {
+        padding: 0.8rem 1.05rem 1.2rem;
+      }
+
+      .cover .image-wrapper {
+        width: calc(100% + 2.1rem);
+        height: clamp(20rem, 49svh, 26rem);
+        margin-inline: -1.05rem;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .cover .wedding-date {
+        font-size: 1.95rem;
+      }
+
+      .cover .names {
+        font-size: 1.38rem;
+      }
+    }
+  }
+
+  .design-compare__sample[data-design="pink-editorial"] {
+    background: #e03b7a;
+    box-shadow:
+      0.35rem 0.4rem 0 #271923,
+      0 1.3rem 2.5rem rgba(75, 8, 40, 0.18);
+
+    .design-compare__heading {
+      .design-compare__new,
+      .design-compare__number,
+      h2,
+      p {
+        color: #fff9fb;
+      }
+    }
+
+    .design-compare__paper {
+      background: #ffe5ed;
+
+      .cover {
+        padding: 0.85rem 0.8rem 1.05rem;
+
+        .wedding-date {
+          font-size: 2.25rem;
+        }
+
+        .wedding-day-of-week {
+          margin-bottom: 0.5rem;
+        }
+
+        .image-wrapper {
+          width: calc(100% + 1.6rem);
+          height: 18.6rem;
+          margin-inline: -0.8rem;
+        }
+
+        .subtitle {
+          font-size: 0.54rem;
+        }
+
+        .names {
+          font-size: 1.55rem;
+        }
+
+        .info {
+          font-size: 0.7rem;
+        }
+      }
+    }
+
+    .design-compare__invitation {
+      border-top: 0.3rem solid #271923;
+      background: #c71d66;
+
+      > span {
+        color: #fff9fb;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.65rem;
+        font-weight: 800;
+        letter-spacing: -0.06em;
+        text-transform: uppercase;
+      }
+
+      p {
+        color: #fff9fb;
+      }
+    }
+  }
+}

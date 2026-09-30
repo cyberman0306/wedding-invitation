@@ -1,0 +1,465 @@
+/**
+ * 로즈 가든: 옅은 장미빛 정원과 부드러운 타원형 사진 액자.
+ * 장식은 표지 바깥쪽에만 두어 본문과 조작 버튼의 가독성을 유지합니다.
+ */
+@mixin styles {
+  html[data-design="rose-garden"],
+  .design-compare__sample[data-design="rose-garden"] {
+    --theme-color: #9a4a67;
+    --theme-bg-color: #f8e9ed;
+    --alt-color: #795d67;
+    --alt-bg-color: #fff4f5;
+    --dark-color: #443039;
+    --dark-grey-color: #b99da7;
+    --light-grey-color: #ead5db;
+    --light-color: #fffaf8;
+    --white-color: #fffaf8;
+    --red-color: #ae5162;
+
+    .cover {
+      isolation: isolate;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 8% 25%, #ffe8ec 0, transparent 36%),
+        radial-gradient(circle at 95% 64%, #f6d3dd 0, transparent 32%), #fff7f6;
+      text-align: center;
+
+      // 사진 뒤로 비치는 둥근 잎과 꽃잎을 CSS로만 표현합니다.
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        width: 10rem;
+        height: 14rem;
+        border: 1px solid rgba(154, 74, 103, 0.23);
+        border-radius: 78% 15% 78% 18%;
+        background:
+          radial-gradient(
+            ellipse at 36% 31%,
+            rgba(255, 255, 255, 0.92) 0 1rem,
+            transparent 1.05rem
+          ),
+          radial-gradient(
+            ellipse at 70% 56%,
+            rgba(244, 185, 199, 0.46) 0 1.2rem,
+            transparent 1.25rem
+          ),
+          radial-gradient(
+            ellipse at 40% 79%,
+            rgba(255, 255, 255, 0.7) 0 0.8rem,
+            transparent 0.85rem
+          );
+        pointer-events: none;
+      }
+
+      &::before {
+        top: 7.5rem;
+        left: -5rem;
+        transform: rotate(-23deg);
+      }
+
+      &::after {
+        right: -5.2rem;
+        bottom: 6rem;
+        transform: rotate(157deg);
+      }
+
+      .wedding-date {
+        position: relative;
+        z-index: 1;
+        gap: 0.65rem;
+        margin: 0.25rem 0 0;
+        padding: 0 0 0.45rem;
+        border-bottom: 1px solid #c7889f;
+        color: #87445d;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.08rem;
+        letter-spacing: 0.1em;
+        line-height: 1.2;
+
+        .divider {
+          width: 1px;
+          height: 0.57rem;
+          background: #c7889f;
+        }
+      }
+
+      .wedding-day-of-week {
+        position: relative;
+        z-index: 1;
+        margin: 0.6rem 0 1.25rem;
+        color: #a45e77;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.68rem;
+        font-style: italic;
+        letter-spacing: 0.19em;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        position: relative;
+        z-index: 1;
+        display: block;
+        width: min(83%, 19.5rem);
+        height: clamp(18.5rem, 46svh, 25rem);
+        flex: 0 0 auto;
+        margin: 0 auto;
+        overflow: hidden;
+        border: 0.5rem solid #fffaf8;
+        border-radius: 48% 48% 45% 45% / 39% 39% 34% 34%;
+        background: #ead0d8;
+        box-shadow:
+          0 0 0 0.15rem #cf91a7,
+          0 0 0 0.46rem rgba(255, 250, 248, 0.9),
+          0 1rem 2rem rgba(111, 50, 75, 0.17);
+        transform: rotate(-2deg);
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 40%;
+        }
+      }
+
+      .subtitle {
+        position: relative;
+        z-index: 2;
+        margin: -1.05rem 0 0;
+        padding: 0.35rem 1.15rem 0.18rem;
+        border: 1px solid #dba8b9;
+        border-radius: 50%;
+        background: #fffaf8;
+        color: #965069;
+        font-family: "Allura", Georgia, serif;
+        font-size: 1.32rem;
+        line-height: 1;
+        box-shadow: 0 0.4rem 0.8rem rgba(111, 50, 75, 0.09);
+      }
+
+      .names {
+        position: relative;
+        z-index: 1;
+        gap: 0.65rem;
+        max-width: 100%;
+        margin: 0.9rem 0 0.6rem;
+        color: #70374c;
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", serif;
+        font-size: clamp(1.34rem, 4.3vw, 1.75rem);
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        line-height: 1.2;
+        white-space: nowrap;
+
+        .divider {
+          width: 1.1rem;
+          height: 1px;
+          background: #c7889f;
+        }
+      }
+
+      .info {
+        position: relative;
+        z-index: 1;
+        max-width: 100%;
+        margin: 0 0 0.26rem;
+        color: #795d67;
+        font-size: 0.86rem;
+        line-height: 1.5;
+        opacity: 1;
+        word-break: keep-all;
+      }
+    }
+  }
+
+  html[data-design="rose-garden"] {
+    body,
+    .background {
+      background: #f5e2e9;
+    }
+
+    .background {
+      background-image: radial-gradient(
+        circle at 50% 0,
+        #fff4f5,
+        #f5e2e9 35rem
+      );
+
+      .card-view {
+        background: #fffaf8;
+        box-shadow: 0 1rem 3rem rgba(111, 50, 75, 0.08);
+
+        .card-group {
+          @media (width > 980px) {
+            margin: 0 0 0.85rem;
+            box-shadow: 0 0.55rem 1.8rem rgba(111, 50, 75, 0.08);
+          }
+
+          .card,
+          &:nth-of-type(odd) > .card,
+          &:nth-of-type(even) > .card {
+            background: #fffaf8;
+          }
+
+          .card {
+            min-width: 0;
+
+            @media (max-width: 980px) {
+              width: 100%;
+              padding: 3.8rem 1.45rem;
+              border-bottom: 1px solid #ecd8df;
+            }
+          }
+
+          .card.cover {
+            justify-content: flex-start;
+            background:
+              radial-gradient(circle at 8% 25%, #ffe8ec 0, transparent 36%),
+              radial-gradient(circle at 95% 64%, #f6d3dd 0, transparent 32%),
+              #fff7f6;
+
+            @media (max-width: 980px) {
+              padding: 1.1rem 1.25rem 1.35rem;
+            }
+          }
+
+          .card.gallery {
+            background: #fff1f3;
+          }
+        }
+
+        .footer {
+          border-top: 1px solid #ecd8df;
+          background: #fff7f6;
+        }
+      }
+    }
+
+    .card > h2.english {
+      margin: 0 0 1.6rem;
+      color: #9a4a67;
+      font-family: "Allura", Georgia, serif;
+      font-size: 2.05rem;
+      letter-spacing: 0;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 3.5rem;
+        height: 1px;
+        margin: 0.55rem auto 0;
+        background: #d5a4b3;
+      }
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.52rem;
+        line-height: 1.9;
+      }
+
+      .name {
+        color: #513640;
+        line-height: 1.75;
+      }
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.4rem 0.4rem 1.7rem;
+      padding: 0.4rem;
+      border: 1px solid #e5c7d0;
+      border-radius: 0.85rem;
+      background: #fff2f4;
+
+      > div.head {
+        background: transparent;
+        color: #8d6070;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.7rem;
+      }
+
+      > div.wedding-date {
+        > span {
+          color: #fffaf8;
+        }
+
+        > div.heart {
+          top: 8%;
+          left: 8%;
+          width: 84%;
+          height: 84%;
+          border-radius: 50%;
+          background: #ad607b;
+          transform: none;
+
+          &::before,
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: #9a4a67;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+    }
+
+    .gallery .carousel-item img {
+      border: 0.4rem solid #fffaf8;
+      border-radius: 46% 46% 0.25rem 0.25rem / 18% 18% 0.25rem 0.25rem;
+      box-shadow: 0 0.65rem 1.5rem rgba(111, 50, 75, 0.16);
+    }
+
+    .gallery .carousel-indicator .indicator.active::before {
+      background: #9a4a67;
+    }
+
+    .location {
+      .map-wrapper {
+        overflow: hidden;
+        border: 0.3rem solid #fff2f4;
+        border-radius: 0.65rem;
+        box-shadow: 0 0 0 1px #dfbac6;
+      }
+
+      .navigation {
+        margin-top: 0.8rem;
+        border: 1px solid #e7cbd4;
+        border-radius: 2rem;
+        background: #fff2f4;
+      }
+
+      .location-info .heading {
+        color: #9a4a67;
+      }
+    }
+
+    .information .info-card {
+      border-top: 1px solid #dcb5c2;
+
+      .label {
+        color: #9a4a67;
+      }
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      margin-top: 0.65rem;
+      border: 1px solid #ecd4dc;
+      border-radius: 0.7rem;
+      background: #fff3f5;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link,
+    .share-button .ktalk-share {
+      min-height: 2.85rem;
+      border: 1px solid #c88fa3;
+      border-radius: 2rem;
+      background: #fff3f5;
+      color: #633b4a;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible,
+    .share-button .ktalk-share:hover,
+    .share-button .ktalk-share:focus-visible {
+      background: #f7dce5;
+      outline: 0.12rem solid #9a4a67;
+      outline-offset: 0.12rem;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 2rem;
+      background: #9a4a67;
+      color: #fffaf8;
+    }
+
+    .modal-background > .modal {
+      border: 1px solid #e7cbd4;
+      border-radius: 0.9rem;
+      background: #fffaf8;
+      box-shadow: 0 1.25rem 3rem rgba(70, 32, 47, 0.2);
+    }
+
+    @media (max-width: 500px) {
+      .background .card-view {
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .background .card-view .card-group .card.cover {
+        padding: 0.85rem 1.05rem 1.25rem;
+      }
+
+      .cover .image-wrapper {
+        height: clamp(18.5rem, 45svh, 24rem);
+      }
+    }
+  }
+
+  .design-compare__sample[data-design="rose-garden"] {
+    background: #f1dce4;
+    box-shadow: 0 1.1rem 2.7rem rgba(111, 50, 75, 0.15);
+
+    .design-compare__heading {
+      .design-compare__number,
+      h2,
+      p {
+        color: #663c4b;
+      }
+    }
+
+    .design-compare__paper {
+      background: #fff7f6;
+
+      .cover {
+        padding: 0.9rem 0.8rem 1.4rem;
+
+        .wedding-date {
+          font-size: 0.98rem;
+        }
+
+        .wedding-day-of-week {
+          margin-bottom: 0.9rem;
+        }
+
+        .image-wrapper {
+          width: min(80%, 18rem);
+          height: 20rem;
+        }
+
+        .names {
+          font-size: 1.35rem;
+        }
+
+        .info {
+          font-size: 0.72rem;
+        }
+      }
+    }
+
+    .design-compare__invitation {
+      border-top: 1px solid #e7cbd4;
+      background: #fffaf8;
+
+      > span {
+        color: #9a4a67;
+        font-family: "Allura", Georgia, serif;
+        font-size: 1.7rem;
+      }
+    }
+  }
+}

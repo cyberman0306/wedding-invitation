@@ -16,6 +16,10 @@
 @use "./themes/editorial" as editorial;
 @use "./themes/aurora" as aurora;
 @use "./themes/letter" as letter;
+@use "./themes/roseGarden" as roseGarden;
+@use "./themes/pinkEditorial" as pinkEditorial;
+@use "./themes/ribbonNote" as ribbonNote;
+@use "./themes/berryNoir" as berryNoir;
 
 :root {
   --theme-color: #a88750;
@@ -263,3 +267,7 @@ div.break {
 @include editorial.styles();
 @include aurora.styles();
 @include letter.styles();
+@include roseGarden.styles();
+@include pinkEditorial.styles();
+@include ribbonNote.styles();
+@include berryNoir.styles();

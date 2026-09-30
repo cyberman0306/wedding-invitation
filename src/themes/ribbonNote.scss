@@ -1,0 +1,520 @@
+/**
+ * 리본 노트 시안입니다. 코랄 핑크 편지지와 인화 사진을 CSS로 겹쳐 놓고,
+ * 안내·입력 영역은 밝은 종이 위에 두어 읽기와 조작을 편하게 합니다.
+ */
+@mixin styles {
+  html[data-design="ribbon-note"],
+  .design-compare__sample[data-design="ribbon-note"] {
+    --theme-color: #a84870;
+    --theme-bg-color: #f3d7df;
+    --alt-color: #945e70;
+    --alt-bg-color: #fcecf0;
+    --dark-color: #493139;
+    --dark-grey-color: #cda9b6;
+    --light-grey-color: #ecd4dc;
+    --light-color: #fffafa;
+    --white-color: #fffdfa;
+    --red-color: #b64662;
+
+    .cover {
+      isolation: isolate;
+      position: relative;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+      min-height: 36rem;
+      overflow: hidden;
+      padding: 1.25rem 1.15rem 2.4rem;
+      background-color: #fff5f5;
+      background-image:
+        linear-gradient(
+          90deg,
+          transparent 0 1.35rem,
+          rgba(223, 134, 157, 0.2) 1.4rem,
+          transparent 1.45rem
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 2.15rem,
+          rgba(205, 146, 164, 0.12) 2.2rem,
+          transparent 2.24rem
+        );
+      text-align: center;
+
+      // 절취한 편지지처럼 작은 반원을 하단에 반복합니다.
+      &::before {
+        content: "";
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        bottom: -0.04rem;
+        left: 0;
+        height: 0.62rem;
+        background: radial-gradient(
+            circle at 0.36rem 0.02rem,
+            transparent 0.35rem,
+            #f3d7df 0.37rem
+          )
+          0 0 / 0.72rem 0.62rem repeat-x;
+        pointer-events: none;
+      }
+
+      // 인쇄된 작은 꽃 표식은 주요 문구를 가리지 않습니다.
+      &::after {
+        content: "✳";
+        position: absolute;
+        top: 1rem;
+        right: 1.05rem;
+        z-index: 0;
+        color: rgba(184, 86, 117, 0.5);
+        font-family: Georgia, serif;
+        font-size: 1.4rem;
+        line-height: 1;
+        pointer-events: none;
+      }
+
+      > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .wedding-date {
+        align-self: flex-start;
+        gap: 0.35rem;
+        width: fit-content;
+        max-width: calc(100% - 2rem);
+        margin: 0.15rem 0 0.25rem 0.5rem;
+        padding: 0.42rem 0.72rem;
+        border: 1px solid #dca6b2;
+        border-radius: 0.16rem;
+        background: #fffafa;
+        box-shadow: 0.14rem 0.16rem 0 #edcad4;
+        color: #9f526b;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.82rem;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        transform: rotate(-3deg);
+
+        .divider {
+          height: 0.55rem;
+          background-color: #cd8b9e;
+        }
+      }
+
+      .wedding-day-of-week {
+        align-self: flex-start;
+        margin: 0.15rem 0 0.45rem 0.7rem;
+        color: #976472;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.62rem;
+        font-style: italic;
+        letter-spacing: 0.14em;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        display: block;
+        width: min(80%, 19rem);
+        height: clamp(17rem, 42svh, 23rem);
+        flex: 0 0 auto;
+        margin: 0.45rem auto 0.65rem;
+        overflow: visible;
+        border: 0.55rem solid #fffdfb;
+        border-bottom-width: 1.25rem;
+        background: #fffdfb;
+        box-shadow:
+          0 0 0 1px rgba(136, 83, 98, 0.14),
+          0.4rem 0.65rem 1.25rem rgba(125, 65, 88, 0.22);
+        transform: rotate(3deg);
+
+        // 분홍 리본 끝의 V자 절개를 장식으로만 사용합니다.
+        &::before {
+          content: "";
+          position: absolute;
+          top: -0.88rem;
+          left: -1.15rem;
+          z-index: 2;
+          width: 4.5rem;
+          height: 1.25rem;
+          background: linear-gradient(
+            105deg,
+            #bd5c7d 0 13%,
+            #e59eb1 13% 31%,
+            #c56e8c 31% 43%,
+            #edb1c0 43% 100%
+          );
+          clip-path: polygon(0 0, 100% 0, 88% 50%, 100% 100%, 0 100%);
+          transform: rotate(-27deg);
+          pointer-events: none;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          right: -0.8rem;
+          bottom: -0.47rem;
+          z-index: 2;
+          width: 2.1rem;
+          height: 2.1rem;
+          border: 1px dashed #ad7082;
+          border-radius: 50%;
+          background: rgba(255, 246, 247, 0.92);
+          transform: rotate(-13deg);
+          pointer-events: none;
+        }
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 39%;
+        }
+      }
+
+      .subtitle {
+        margin: 0.3rem 0 0;
+        color: #bd6d88;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.68rem;
+        font-style: italic;
+        letter-spacing: 0.06em;
+        line-height: 1.4;
+      }
+
+      .names {
+        gap: 0.5rem;
+        margin: 0.45rem 0 0.48rem;
+        color: #5b3846;
+        font-family: "AppleMyungjo", "Noto Serif KR", Georgia, serif;
+        font-size: clamp(1.35rem, 5.8vw, 1.8rem);
+        letter-spacing: -0.045em;
+        line-height: 1.3;
+        white-space: nowrap;
+
+        .divider {
+          width: 1rem;
+          height: auto;
+          background: none;
+
+          &::after {
+            content: "♡";
+            color: #c46f8e;
+            font-family: Georgia, serif;
+            font-size: 1.12rem;
+          }
+        }
+      }
+
+      .info {
+        margin: 0 0 0.18rem;
+        color: #805668;
+        font-size: 0.86rem;
+        letter-spacing: 0.015em;
+        line-height: 1.5;
+        opacity: 1;
+        word-break: keep-all;
+      }
+    }
+  }
+
+  html[data-design="ribbon-note"] {
+    body,
+    .background {
+      background-color: #f3d7df;
+    }
+
+    .background {
+      background-image:
+        radial-gradient(circle at 12% 5%, #fde9ea 0, transparent 25rem),
+        linear-gradient(135deg, #f9e5e9, #eec5d3);
+
+      .card-view {
+        width: min(calc(100% - 1rem), 61.25rem);
+        padding: 0.65rem 0 1.2rem;
+        background: transparent;
+        box-shadow: none;
+
+        .card-group {
+          gap: 0.8rem;
+          margin: 0 0 0.8rem;
+          background: transparent;
+          box-shadow: none;
+
+          .card {
+            min-width: 0;
+            width: calc(50% - 0.4rem);
+            border: 1px solid #eccbd4;
+            border-radius: 0.45rem;
+            background: #fffafa;
+            box-shadow:
+              0.2rem 0.23rem 0 #eabdc9,
+              0 0.75rem 1.6rem rgba(119, 59, 80, 0.11);
+
+            @media (max-width: 980px) {
+              width: 100%;
+              margin: 0;
+              padding: 3.4rem 1.4rem;
+            }
+          }
+
+          &:nth-of-type(odd) > .card,
+          &:nth-of-type(even) > .card {
+            background: #fffafa;
+          }
+
+          .card.cover {
+            border-radius: 0.3rem;
+            background-color: #fff5f5;
+            background-image:
+              linear-gradient(
+                90deg,
+                transparent 0 1.35rem,
+                rgba(223, 134, 157, 0.2) 1.4rem,
+                transparent 1.45rem
+              ),
+              repeating-linear-gradient(
+                0deg,
+                transparent 0 2.15rem,
+                rgba(205, 146, 164, 0.12) 2.2rem,
+                transparent 2.24rem
+              );
+            padding: 1.25rem 1.15rem 2.4rem;
+          }
+        }
+
+        .footer {
+          border: 1px solid #eccbd4;
+          border-radius: 0.45rem;
+          background: #fffafa;
+          box-shadow: 0.2rem 0.23rem 0 #eabdc9;
+        }
+      }
+    }
+
+    .card > h2.english {
+      margin: 0 0 1.25rem;
+      color: #a84870;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.14rem;
+      font-style: italic;
+      letter-spacing: 0.035em;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 2.5rem;
+        height: 0.28rem;
+        margin: 0.75rem auto 0;
+        background: repeating-linear-gradient(
+          90deg,
+          #c7829a 0 0.32rem,
+          transparent 0.32rem 0.55rem
+        );
+      }
+    }
+
+    .invitation .content {
+      margin-block: 0.5rem;
+      line-height: 1.9;
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.4rem 0.25rem;
+      padding: 0.35rem;
+      border: 1px solid #e5bac7;
+      border-radius: 0.35rem;
+      background: #fff2f4;
+
+      > div.head {
+        background: none;
+        color: #9a5c71;
+        font-family: Georgia, serif;
+        font-size: 0.7rem;
+      }
+
+      > div.wedding-date > div.heart {
+        top: 9%;
+        left: 9%;
+        width: 82%;
+        height: 82%;
+        border-radius: 50%;
+        background: #d77898;
+        transform: none;
+
+        &::before,
+        &::after {
+          content: none;
+        }
+      }
+
+      > div.wedding-date > span {
+        color: #fffafa;
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: #a84870;
+      font-family: Georgia, serif;
+      font-size: 1.35rem;
+    }
+
+    .gallery .carousel-wrapper {
+      .carousel {
+        width: min(21rem, 100%);
+        max-width: 100%;
+      }
+
+      .carousel-item img {
+        max-width: calc(100% - 0.55rem);
+        max-height: calc(100% - 0.55rem);
+        border: 0.35rem solid #fffefa;
+        border-bottom-width: 0.85rem;
+        box-shadow: 0 0.4rem 1rem rgba(127, 57, 79, 0.18);
+      }
+
+      .carousel-indicator .indicator.active::before {
+        background: #b65c7a;
+      }
+    }
+
+    .location {
+      .map-wrapper {
+        overflow: hidden;
+        border: 0.25rem solid #fffdfb;
+        border-radius: 0.4rem;
+        box-shadow: 0 0 0 1px #dbb0be;
+      }
+
+      .navigation {
+        margin-top: 0.6rem;
+        border: 1px solid #e8c6d0;
+        border-radius: 0.4rem;
+        background: #fbe7ed;
+      }
+    }
+
+    .information .info-card {
+      border-top: 1px dashed #d19caf;
+
+      .label {
+        color: #a84870;
+      }
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      margin-top: 0.7rem;
+      border: 1px solid #e8c8d2;
+      border-radius: 0.35rem;
+      background: #fff3f5;
+      box-shadow: 0.12rem 0.14rem 0 #f0d6de;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link,
+    .share-button .ktalk-share {
+      min-height: 2.85rem;
+      border: 1px solid #cf91a7;
+      border-radius: 0.45rem;
+      background: #fff5f6;
+      color: #65404d;
+      box-shadow: 0 0.16rem 0 #ebc7d1;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible,
+    .share-button .ktalk-share:hover,
+    .share-button .ktalk-share:focus-visible {
+      background: #fbe4ea;
+      outline: 0.12rem solid #aa5a78;
+      outline-offset: 0.13rem;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 0.45rem;
+      background: #ad5577;
+      color: #fffafa;
+    }
+
+    .modal-background > .modal {
+      border: 1px solid #e4bdc9;
+      border-radius: 0.7rem;
+      background: #fffafa;
+      box-shadow: 0 1.2rem 3rem rgba(81, 40, 55, 0.24);
+    }
+
+    .modal-background > .modal .header {
+      background: #fffafa;
+    }
+
+    @media (max-width: 500px) {
+      .background .card-view {
+        width: calc(100% - 0.55rem);
+        padding-top: 0.3rem;
+
+        .card-group .card.cover {
+          min-height: 34rem;
+          padding: 0.95rem 0.8rem 1.85rem;
+        }
+      }
+
+      .cover .image-wrapper {
+        height: clamp(16rem, 39svh, 21rem);
+      }
+    }
+  }
+
+  .design-compare__sample[data-design="ribbon-note"] {
+    border: 1px solid #e6b4c3;
+    border-radius: 0.4rem;
+    background: #f9e6e9;
+    box-shadow:
+      0.25rem 0.3rem 0 #e0afbe,
+      0 1.1rem 2.5rem rgba(111, 53, 72, 0.14);
+
+    .design-compare__paper {
+      overflow: hidden;
+      background: #fff5f5;
+
+      .cover {
+        min-height: 28rem;
+        padding: 0.8rem 0.65rem 1.4rem;
+
+        .wedding-date {
+          margin-top: 0;
+          font-size: 0.7rem;
+        }
+
+        .image-wrapper {
+          width: 76%;
+          height: 16.8rem;
+          margin-top: 0.4rem;
+        }
+
+        .names {
+          font-size: 1.25rem;
+        }
+
+        .info {
+          font-size: 0.68rem;
+        }
+      }
+
+      .design-compare__invitation {
+        border-top: 1px dashed #ddb1c0;
+        background: #fffafa;
+
+        > span {
+          color: #ae5678;
+          font-family: Georgia, serif;
+          font-size: 1.1rem;
+          font-style: italic;
+        }
+      }
+    }
+  }
+}

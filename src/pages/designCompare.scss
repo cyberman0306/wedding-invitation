@@ -86,6 +86,18 @@
         outline: 0.12rem solid #9b835f;
         outline-offset: 0.12rem;
       }
+
+      // 새 분홍 시안 네 가지를 한눈에 찾을 수 있게 표시합니다.
+      &.design-compare__picker-pink {
+        background: #f8e0e9;
+        color: #73364d;
+
+        &:hover,
+        &:focus-visible {
+          border-color: #b66381;
+          background: #f2cbd9;
+        }
+      }
     }
   }
 
@@ -111,6 +123,15 @@
 
   &__heading {
     padding: 0.35rem 0 1.35rem;
+
+    .design-compare__new {
+      display: block;
+      margin-bottom: 0.32rem;
+      color: #ad5573;
+      font-family: Georgia, serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.17em;
+    }
 
     .design-compare__number {
       color: #86735d;
