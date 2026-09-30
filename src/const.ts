@@ -63,8 +63,8 @@ export const WREATH_ORDER_URL =
  * 배경 음악 설정. 웹 공개 사용이 허용된 음원만 public/music/에 넣습니다.
  * 파일명을 빈 문자열로 바꾸면 재생 버튼이 사라집니다.
  */
-export const WEDDING_MUSIC_TITLE = "Dellasera"
-export const WEDDING_MUSIC_FILE = "dellasera-optimized.mp3"
+export const WEDDING_MUSIC_TITLE = ""
+export const WEDDING_MUSIC_FILE = ""
 
 /**
  * 지도 서비스(네이버, 카카오)에 사용할 좌표 [경도, 위도]
