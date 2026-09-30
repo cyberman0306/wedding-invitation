@@ -9,7 +9,7 @@ import { Information } from "./component/information"
 import { GuestBook } from "./component/guestbook"
 import { LazyDiv } from "./component/lazyDiv"
 import { ShareButton } from "./component/shareButton"
-import { MusicCredit, MusicPlayer } from "./component/musicPlayer"
+import { MusicPlayer } from "./component/musicPlayer"
 
 /**
  * 메인 애플리케이션 컴포넌트입니다.
@@ -54,7 +54,6 @@ function App() {
 
         {/* 카카오톡/링크 공유 버튼 */}
         <ShareButton />
-        <MusicCredit />
       </div>
     </div>
   )

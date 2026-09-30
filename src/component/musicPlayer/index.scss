@@ -47,30 +47,3 @@
     display: none;
   }
 }
-
-.music-credit {
-  width: 100%;
-  margin: 0;
-  padding: 0.35rem 1rem 1.5rem;
-  background: var(--light-color);
-  color: var(--alt-color);
-  font-size: 0.62rem;
-  line-height: 1.7;
-  text-align: center;
-  word-break: keep-all;
-
-  a {
-    color: inherit;
-    text-underline-offset: 0.14rem;
-  }
-
-  // 작은 화면에서는 고정된 음악 버튼이 출처 표시를 가리지 않게 합니다.
-  @media (max-width: 600px) {
-    padding-right: 9rem;
-    text-align: left;
-  }
-
-  @media print {
-    display: none;
-  }
-}
