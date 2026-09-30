@@ -17,8 +17,8 @@ export const MusicPlayer = () => {
     // 자동재생이 차단된 환경에서는 첫 클릭/키보드 입력 때 한 번 더 시도합니다.
     // 재생 성공 또는 음악 버튼 조작 후에는 자동 시작을 해제해 일시정지를 존중합니다.
     const clearGestureListeners = () => {
-      document.removeEventListener("click", startOnGesture)
-      document.removeEventListener("keydown", startOnGesture)
+      document.removeEventListener("click", startOnGesture, true)
+      document.removeEventListener("keydown", startOnGesture, true)
     }
     const startOnGesture = (event: Event) => {
       if (!event.isTrusted) return
@@ -30,8 +30,8 @@ export const MusicPlayer = () => {
       })
     }
 
-    document.addEventListener("click", startOnGesture)
-    document.addEventListener("keydown", startOnGesture)
+    document.addEventListener("click", startOnGesture, true)
+    document.addEventListener("keydown", startOnGesture, true)
     audio.addEventListener("play", clearGestureListeners)
     void audio.play().catch(() => {
       // 자동재생이 허용되지 않으면 첫 사용자 입력을 기다립니다.
