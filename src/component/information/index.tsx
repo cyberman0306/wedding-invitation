@@ -109,9 +109,9 @@ const WreathInfo = () => (
   <div className="info-card wreath-card">
     <div className="label">축하 화환</div>
     <div className="content">
-      꽃으로 축하의 마음을 전하고 싶으신 분께
+      꽃으로 축하의 마음을
       <br />
-      화환 주문 페이지를 안내드립니다.
+      전하고 싶으신 분께
     </div>
     <div className="break" />
     <a
@@ -123,11 +123,6 @@ const WreathInfo = () => (
     >
       축하 화환 보내기 <span aria-hidden="true">↗</span>
     </a>
-    <p className="wreath-note">
-      네이버 스마트스토어로 이동합니다.
-      <br />
-      주문 시 결혼식용 화환과 배송지를 확인해 주세요.
-    </p>
   </div>
 )
 
