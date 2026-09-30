@@ -16,6 +16,11 @@
     border-radius: 0.35rem;
     background: var(--theme-color);
     color: var(--white-color);
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
   }
 }
 
@@ -30,7 +35,30 @@
 }
 
 .admin-toolbar {
+  flex-wrap: wrap;
   margin: 1.5rem 0 1rem;
+}
+
+.admin-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem;
+  margin-top: 1.5rem;
+  padding: 0.3rem;
+  border-radius: 0.6rem;
+  background: var(--theme-bg-color);
+
+  button {
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--dark-color);
+
+    &[aria-pressed="true"] {
+      background: var(--white-color);
+      color: var(--theme-color);
+      box-shadow: 0 0.1rem 0.4rem rgb(0 0 0 / 8%);
+    }
+  }
 }
 
 .admin-posts {
@@ -57,6 +85,38 @@
 .admin-post-heading time {
   color: #777;
   font-size: 0.8rem;
+}
+
+.admin-attendance-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 0;
+
+  dt {
+    margin-bottom: 0.3rem;
+    color: #777;
+    font-size: 0.8rem;
+  }
+
+  dd {
+    margin: 0;
+    user-select: text;
+  }
+}
+
+.admin-empty {
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--white-color);
+  text-align: center;
+}
+
+.admin-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
 .admin-actions {
