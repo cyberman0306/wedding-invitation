@@ -54,6 +54,12 @@ export const SHARE_ADDRESS = LOCATION_ROAD_ADDRESS
 export const SHARE_ADDRESS_TITLE = LOCATION
 
 /**
+ * 축하 화환 주문 안내에 사용할 외부 상품 페이지
+ */
+export const WREATH_ORDER_URL =
+  "https://smartstore.naver.com/honeyflowershop/products/4865184709"
+
+/**
  * 지도 서비스(네이버, 카카오)에 사용할 좌표 [경도, 위도]
  */
 export const WEDDING_HALL_POSITION = [126.72258238031, 37.526303002436]

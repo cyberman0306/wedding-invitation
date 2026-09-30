@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { BRIDE_INFO, GROOM_INFO } from "../../const"
+import { BRIDE_INFO, GROOM_INFO, WREATH_ORDER_URL } from "../../const"
 import { STATIC_ONLY } from "../../env"
 import { Button } from "../button"
 import { LazyDiv } from "../lazyDiv"
@@ -104,27 +104,46 @@ export const Information2 = () => {
   )
 }
 
+/** 축하 화환을 보내고 싶은 하객에게 외부 주문 페이지를 안내합니다. */
+const WreathInfo = () => (
+  <div className="info-card wreath-card">
+    <div className="label">축하 화환</div>
+    <div className="content">
+      꽃으로 축하의 마음을 전하고 싶으신 분께
+      <br />
+      화환 주문 페이지를 안내드립니다.
+    </div>
+    <div className="break" />
+    <a
+      className="wreath-link"
+      href={WREATH_ORDER_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="축하 화환 보내기, 네이버 스마트스토어 새 창에서 열기"
+    >
+      축하 화환 보내기 <span aria-hidden="true">↗</span>
+    </a>
+    <p className="wreath-note">
+      네이버 스마트스토어로 이동합니다.
+      <br />
+      주문 시 결혼식용 화환과 배송지를 확인해 주세요.
+    </p>
+  </div>
+)
+
 /**
- * 정보 안내(축의금, 참석의사)를 통합하여 표시하는 컴포넌트입니다.
+ * 정보 안내(축의금, 화환, 참석의사)를 통합하여 표시하는 컴포넌트입니다.
  *
  * @returns {JSX.Element} 정보 안내 섹션
  */
 export const Information = () => {
-  // 정적 모드일 경우 참석 의사 전달 기능을 제외합니다.
-  if (STATIC_ONLY) {
-    return (
-      <LazyDiv className="card information">
-        <h2 className="english">Information</h2>
-        <Information2 />
-      </LazyDiv>
-    )
-  }
-
   return (
     <LazyDiv className="card information">
       <h2 className="english">Information</h2>
       <Information2 />
-      <AttendanceInfo />
+      <WreathInfo />
+      {/* 정적 보관 모드에서는 참석 의사 전달 기능을 제외합니다. */}
+      {!STATIC_ONLY && <AttendanceInfo />}
     </LazyDiv>
   )
 }
