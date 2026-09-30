@@ -98,6 +98,22 @@
           background: #f2cbd9;
         }
       }
+
+      &.design-compare__picker-showcase {
+        background: #2d3033;
+        color: #fff;
+
+        span,
+        small {
+          color: #fff;
+        }
+
+        &:hover,
+        &:focus-visible {
+          border-color: #dfb7c4;
+          background: #54414b;
+        }
+      }
     }
   }
 

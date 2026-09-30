@@ -5,6 +5,8 @@ import { ModalProvider } from "./component/modal"
 import { StoreProvider } from "./component/store"
 import { AdminPage } from "./pages/AdminPage"
 import { DesignCompare } from "./pages/DesignCompare"
+import { ShowcaseInvitation } from "./pages/ShowcaseInvitation"
+import { SHOWCASE_DESIGNS, type ShowcaseDesign } from "./showcaseDesigns"
 
 const isAdminPage = window.location.pathname
   .replace(/\/$/, "")
@@ -24,6 +26,7 @@ const previewDesigns = [
   "pink-editorial",
   "ribbon-note",
   "berry-noir",
+  ...SHOWCASE_DESIGNS,
 ]
 
 // 시안 URL에서만 디자인을 바꿉니다. 기본 청첩장 및 QR 주소는 그대로 유지됩니다.
@@ -48,6 +51,8 @@ root.render(
           <AdminPage />
         ) : isDesignCompare ? (
           <DesignCompare />
+        ) : design && SHOWCASE_DESIGNS.includes(design as ShowcaseDesign) ? (
+          <ShowcaseInvitation design={design as ShowcaseDesign} />
         ) : (
           <App />
         )}

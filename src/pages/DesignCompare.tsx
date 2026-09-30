@@ -1,4 +1,6 @@
 import { Cover } from "../component/cover"
+import { ShowcaseHero } from "../component/showcaseHero"
+import { SHOWCASE_DESIGNS, type ShowcaseDesign } from "../showcaseDesigns"
 import "./designCompare.scss"
 
 const invitationUrl = import.meta.env.BASE_URL
@@ -8,6 +10,7 @@ const pinkDesignIds = new Set([
   "ribbon-note",
   "berry-noir",
 ])
+const showcaseDesignIds = new Set<string>(SHOWCASE_DESIGNS)
 
 const designs = [
   {
@@ -106,6 +109,30 @@ const designs = [
     description: "진한 장밋빛과 가느다란 금빛 장식",
     url: `${invitationUrl}?design=berry-noir`,
   },
+  {
+    id: "afterglow",
+    number: "13",
+    name: "애프터글로우 포스터",
+    shortName: "포스터",
+    description: "사진 위에 붓글씨를 얹은 대담한 풀스크린 초대",
+    url: `${invitationUrl}?design=afterglow`,
+  },
+  {
+    id: "photo-diary",
+    number: "14",
+    name: "포토 다이어리",
+    shortName: "콜라주",
+    description: "세 장의 사진과 굵은 글자로 엮은 매거진 표지",
+    url: `${invitationUrl}?design=photo-diary`,
+  },
+  {
+    id: "blue-hour",
+    number: "15",
+    name: "블루 아워 필름",
+    shortName: "필름",
+    description: "푸른빛 사진과 손글씨가 흐르는 밝은 화면",
+    url: `${invitationUrl}?design=blue-hour`,
+  },
 ] as const
 
 /**
@@ -120,9 +147,10 @@ export const DesignCompare = () => (
       </span>
       <h1>우리의 청첩장, 어떤 분위기가 좋을까요?</h1>
       <p>
-        번호를 누르거나 아래로 넘기며 열두 가지 표지를 비교해 보세요.
+        번호를 누르거나 아래로 넘기며 열다섯 가지 표지를 비교해 보세요.
         <br />각 시안의 전체보기에서는 사진, 지도, 방명록까지 기존 청첩장을
-        그대로 볼 수 있습니다. 09~12번은 새로 만든 핑크 계열 시안입니다.
+        그대로 볼 수 있습니다. 13~15번은 사진 배치부터 새로 만든 독립형
+        시안입니다.
       </p>
       <a href={invitationUrl}>현재 청첩장으로 돌아가기</a>
     </header>
@@ -133,7 +161,11 @@ export const DesignCompare = () => (
           href={`#design-${id}`}
           aria-label={`${number} ${name} 시안으로 이동`}
           className={
-            pinkDesignIds.has(id) ? "design-compare__picker-pink" : undefined
+            pinkDesignIds.has(id)
+              ? "design-compare__picker-pink"
+              : showcaseDesignIds.has(id)
+                ? "design-compare__picker-showcase"
+                : undefined
           }
           key={id}
         >
@@ -155,21 +187,32 @@ export const DesignCompare = () => (
             {pinkDesignIds.has(id) && (
               <span className="design-compare__new">PINK COLLECTION</span>
             )}
+            {showcaseDesignIds.has(id) && (
+              <span className="design-compare__new">NEW LAYOUT</span>
+            )}
             <span className="design-compare__number">DESIGN {number}</span>
             <h2>{name}</h2>
             <p>{description}</p>
           </div>
 
-          <div className="design-compare__paper">
-            <Cover design={id} />
-            <div className="design-compare__invitation">
-              <span>Invitation</span>
-              <p>
-                한 해를 여는 1월의 설렘으로
-                <br />
-                저희 두 사람이 하나가 되려 합니다.
-              </p>
-            </div>
+          <div
+            className={`design-compare__paper${showcaseDesignIds.has(id) ? " design-compare__paper--showcase" : ""}`}
+          >
+            {showcaseDesignIds.has(id) ? (
+              <ShowcaseHero design={id as ShowcaseDesign} />
+            ) : (
+              <>
+                <Cover design={id} />
+                <div className="design-compare__invitation">
+                  <span>Invitation</span>
+                  <p>
+                    한 해를 여는 1월의 설렘으로
+                    <br />
+                    저희 두 사람이 하나가 되려 합니다.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
 
           <a

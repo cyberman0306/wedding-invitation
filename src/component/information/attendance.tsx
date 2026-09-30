@@ -13,6 +13,7 @@ import CalendarIcon from "../../icons/calendar-icon.svg?react"
 import MarkerIcon from "../../icons/marker-icon.svg?react"
 import { FIREBASE_ENABLED } from "../../env"
 import { createAttendance } from "../../services/attendanceService"
+import { SHOWCASE_DESIGNS, type ShowcaseDesign } from "../../showcaseDesigns"
 
 /**
  * 입력 데이터 제한 규칙
@@ -46,6 +47,14 @@ export const AttendanceInfo = () => {
 
     // Firebase가 설정되지 않았거나 예식일이 지났으면 안내 모달을 띄우지 않음
     if (!FIREBASE_ENABLED || WEDDING_DATE.isBefore(now.current)) return
+
+    // 독립형 디자인 시안은 첫 화면을 가리지 않되, 본문의 참석 버튼은 유지합니다.
+    if (
+      SHOWCASE_DESIGNS.includes(
+        document.documentElement.dataset.design as ShowcaseDesign,
+      )
+    )
+      return
 
     attendanceInfoModalState[1](true)
   }, [attendanceInfoModalState])
