@@ -153,7 +153,9 @@ npm run build
 
 ### 배경 음악
 
-- **Dellasera (2021)** — Shane Ivers
-- 원본: https://www.silvermansound.com/free-music/dellasera
-- 라이선스: Creative Commons Attribution 4.0 International (CC BY 4.0) — https://creativecommons.org/licenses/by/4.0/
-- 모바일 재생을 위해 원본 MP3의 비트레이트만 낮췄으며 음악 내용은 변경하지 않았습니다.
+- 사용곡: **01. Blossom Promenade** — 브금통장
+- Title : 예비신부가 만든 프로포즈, 웨딩, 모바일청첩장 무료브금 모음집
+- Music by [@브금통장](https://www.youtube.com/@브금통장)
+- link : https://www.youtube.com/watch?v=ugMDZxoE3oc
+- 제작자는 사용곡 번호 댓글과 출처·링크 표기를 조건으로 개인 모바일 청첩장 사용을 허용합니다.
+- 원본의 0:00–2:50 구간을 사용하고 마지막 2.2초에 페이드아웃을 적용했습니다.
