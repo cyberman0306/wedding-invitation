@@ -5,7 +5,7 @@ import {
   WEDDING_DATE,
   WEDDING_DATE_FORMAT,
 } from "../../const"
-import { COVER_IMAGE } from "../../images"
+import { COVER_IMAGE, GALLERY_IMAGES } from "../../images"
 import { LazyDiv } from "../lazyDiv"
 
 const DAY_OF_WEEK = [
@@ -24,7 +24,10 @@ const DAY_OF_WEEK = [
  *
  * @returns {JSX.Element} 커버 섹션
  */
-export const Cover = () => {
+export const Cover = ({ design }: { design?: string }) => {
+  const activeDesign = design ?? document.documentElement.dataset.design
+  const isCinema = activeDesign === "cinema"
+
   return (
     <LazyDiv className="card cover">
       {/* 상단 날짜 표시 */}
@@ -41,7 +44,14 @@ export const Cover = () => {
       </div>
       {/* 커버 이미지 */}
       <div className="image-wrapper">
-        <img src={COVER_IMAGE} alt={`${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}의 웨딩 일러스트`} />
+        <img
+          src={isCinema ? GALLERY_IMAGES[2] : COVER_IMAGE}
+          alt={
+            isCinema
+              ? `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}이 꽃 아치 아래에 앉아 있는 웨딩 일러스트`
+              : `${GROOM_FULLNAME}과 ${BRIDE_FULLNAME}의 웨딩 일러스트`
+          }
+        />
       </div>
       <div className="subtitle">Save the date for the wedding of</div>
       {/* 이름 표시 */}

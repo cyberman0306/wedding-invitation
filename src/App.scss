@@ -10,6 +10,8 @@
 @use "./component/modal";
 @use "./component/shareButton";
 @use "./designThemes" as designThemes;
+@use "./themes/paper" as paper;
+@use "./themes/cinema" as cinema;
 
 :root {
   --theme-color: #a88750;
@@ -252,3 +254,5 @@ div.break {
 }
 
 @include designThemes.styles();
+@include paper.styles();
+@include cinema.styles();

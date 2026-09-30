@@ -5,22 +5,36 @@ const invitationUrl = import.meta.env.BASE_URL
 
 const designs = [
   {
-    id: "blush",
+    id: "paper",
     number: "01",
+    name: "입체 팝업북",
+    description: "겹친 종이와 빛의 그림자로 여는 초대",
+    url: `${invitationUrl}?design=paper`,
+  },
+  {
+    id: "cinema",
+    number: "02",
+    name: "시네마틱 에디토리얼",
+    description: "한 장면처럼 펼쳐지는 우리의 이야기",
+    url: `${invitationUrl}?design=cinema`,
+  },
+  {
+    id: "blush",
+    number: "03",
     name: "블러시 골드",
     description: "현재 청첩장 · 은은한 분홍과 골드",
     url: invitationUrl,
   },
   {
     id: "ivory",
-    number: "02",
+    number: "04",
     name: "아이보리 샴페인",
     description: "따뜻한 아이보리와 차분한 골드",
     url: `${invitationUrl}?design=ivory`,
   },
   {
     id: "ink",
-    number: "03",
+    number: "05",
     name: "화이트 앤 잉크",
     description: "선명한 흑백 대비와 작은 골드 포인트",
     url: `${invitationUrl}?design=ink`,
@@ -39,7 +53,7 @@ export const DesignCompare = () => (
       </span>
       <h1>우리의 청첩장, 어떤 분위기가 좋을까요?</h1>
       <p>
-        아래로 넘기며 세 가지 표지를 비교해 보세요.
+        아래로 넘기며 다섯 가지 표지를 비교해 보세요.
         <br />각 시안의 전체보기에서는 사진, 지도, 방명록까지 기존 청첩장을
         그대로 볼 수 있습니다.
       </p>
@@ -56,7 +70,7 @@ export const DesignCompare = () => (
           </div>
 
           <div className="design-compare__paper">
-            <Cover />
+            <Cover design={id} />
             <div className="design-compare__invitation">
               <span>Invitation</span>
               <p>

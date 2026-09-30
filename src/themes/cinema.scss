@@ -1,0 +1,470 @@
+/**
+ * 시네마 시안: 첫 화면은 영화 포스터처럼, 이후 섹션은 상영 팸플릿처럼 보입니다.
+ * 내용과 버튼의 DOM은 공통 컴포넌트를 그대로 사용합니다.
+ */
+@mixin styles {
+  html[data-design="cinema"],
+  .design-compare__sample[data-design="cinema"] {
+    --theme-color: #987243;
+    --theme-bg-color: #171310;
+    --alt-color: #765f49;
+    --alt-bg-color: #e9ddc9;
+    --dark-color: #281e1b;
+    --dark-grey-color: #aaa091;
+    --light-grey-color: #d9cbb7;
+    --light-color: #f4eddf;
+    --white-color: #fff8ea;
+    --red-color: #a74a42;
+
+    .cover {
+      isolation: isolate;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 42rem;
+      overflow: hidden;
+      background: #1b1614;
+      padding: 8rem 1.4rem 3.1rem;
+      text-align: center;
+
+      // 이미지 위의 문구는 원본 일러스트의 어두운 바닥을 활용합니다.
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+          180deg,
+          rgba(17, 13, 12, 0.64) 0%,
+          rgba(17, 13, 12, 0.17) 23%,
+          rgba(17, 13, 12, 0.04) 42%,
+          rgba(17, 13, 12, 0.26) 62%,
+          rgba(17, 13, 12, 0.92) 100%
+        );
+        pointer-events: none;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0.75rem;
+        z-index: 3;
+        border: 1px solid rgba(255, 245, 223, 0.47);
+        pointer-events: none;
+      }
+
+      .image-wrapper {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 43%;
+          filter: saturate(0.86) contrast(1.08);
+          animation: cinema-image-drift 18s ease-in-out alternate infinite;
+        }
+      }
+
+      .wedding-date,
+      .wedding-day-of-week,
+      .subtitle,
+      .names,
+      .info {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        color: #fff8eb;
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+      }
+
+      .wedding-date {
+        position: absolute;
+        top: 2rem;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 0.84rem;
+        letter-spacing: 0.2em;
+        line-height: 1;
+
+        .divider {
+          width: 1px;
+          height: 0.6rem;
+          background: rgba(255, 248, 235, 0.74);
+        }
+      }
+
+      .wedding-day-of-week {
+        position: absolute;
+        top: 3.45rem;
+        left: 0;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        font-size: 0.55rem;
+        font-weight: 600;
+        letter-spacing: 0.34em;
+        text-transform: uppercase;
+        opacity: 0.86;
+      }
+
+      .subtitle {
+        margin: 0 0 0.7rem;
+        font-family: Arial, sans-serif;
+        font-size: 0.58rem;
+        font-weight: 600;
+        letter-spacing: 0.21em;
+        line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .names {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.62rem;
+        margin: 0 0 0.95rem;
+        font-family: "AppleMyungjo", "Noto Serif KR", Georgia, serif;
+        font-size: clamp(1.8rem, 7.6vw, 2.8rem);
+        font-weight: 400;
+        letter-spacing: -0.08em;
+        line-height: 1.2;
+        white-space: nowrap;
+
+        .divider {
+          width: 1.2rem;
+          height: 1px;
+          flex: 0 0 1.2rem;
+          background: #ead6b5;
+        }
+      }
+
+      .info {
+        margin: 0 0 0.22rem;
+        font-size: 0.75rem;
+        letter-spacing: 0.04em;
+        line-height: 1.6;
+        opacity: 1;
+        word-break: keep-all;
+      }
+
+      .info:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  @keyframes cinema-image-drift {
+    from {
+      transform: scale(1.01);
+    }
+    to {
+      transform: scale(1.075) translateY(-0.4%);
+    }
+  }
+
+  // 실제 청첩장의 모든 기능 섹션은 같은 자료를 사용하고 표면만 바꿉니다.
+  html[data-design="cinema"] {
+    body,
+    .background {
+      background: var(--theme-bg-color);
+    }
+
+    .bg-effect {
+      opacity: 0.24;
+    }
+
+    .background .card-view {
+      @media (max-width: 980px) {
+        background: var(--theme-bg-color);
+        box-shadow: 0 1.4rem 4rem rgba(0, 0, 0, 0.35);
+      }
+
+      .card-group {
+        @media (width > 980px) {
+          margin: 0 0 0.9rem;
+          background: var(--light-color);
+          box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.24);
+        }
+
+        .card {
+          border: 0;
+          background: var(--light-color);
+
+          @media (max-width: 980px) {
+            padding: 4.1rem 1.6rem;
+            border-bottom: 1px solid #d9cbb7;
+          }
+        }
+
+        &:nth-of-type(odd) > .card {
+          background: var(--light-color);
+        }
+
+        .card.cover {
+          background: #1b1614;
+          border: 0;
+          justify-content: flex-end;
+          padding: 8rem 1.4rem 3.1rem;
+
+          @media (max-width: 980px) {
+            min-height: 100svh;
+            padding: 8rem 1.4rem max(2.6rem, env(safe-area-inset-bottom));
+          }
+        }
+
+        .card.gallery {
+          background: #211b19;
+          color: #f4eddf;
+
+          h2.english {
+            color: #d7b788;
+          }
+
+          .carousel-item img {
+            border: 0.25rem solid #f4eddf;
+            box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.35);
+          }
+
+          .carousel-indicator .indicator::before {
+            background: #85735e;
+          }
+
+          .carousel-indicator .indicator.active::before {
+            background: #e5cb9f;
+          }
+        }
+      }
+
+      .footer {
+        border: 0;
+        background: #211b19;
+        color: #f4eddf;
+      }
+    }
+
+    .card > h2.english {
+      margin: 0 0 1rem;
+      color: #7d5f3e;
+      font-family: Arial, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      line-height: 1.6;
+      text-transform: uppercase;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 2.3rem;
+        height: 1px;
+        margin: 0.95rem auto 0;
+        background: currentColor;
+      }
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.4rem;
+        line-height: 1.85;
+      }
+
+      .name {
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+    }
+
+    .calendar {
+      .calendar-wrapper {
+        margin: 1.5rem 0.3rem;
+        border: 1px solid #c0aa8a;
+
+        > div.head {
+          background: #31241e;
+
+          > span {
+            color: #f4eddf;
+          }
+        }
+
+        > div.wedding-date {
+          > span {
+            color: #fff7e8;
+          }
+
+          > div.heart {
+            top: 9%;
+            left: 9%;
+            width: 82%;
+            height: 82%;
+            transform: none;
+            border-radius: 50%;
+            background: #8e643f;
+
+            &::before,
+            &::after {
+              content: none;
+            }
+          }
+        }
+      }
+
+      .countdown-wrapper .countdown .count {
+        color: #765038;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.45rem;
+      }
+    }
+
+    .location .map-wrapper {
+      outline: 0.3rem solid #dfcfb7;
+      outline-offset: -0.3rem;
+    }
+
+    .location .navigation {
+      background: #e5d6bf;
+    }
+
+    .information .info-card {
+      border-top: 1px solid #ad9271;
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      border: 1px solid #cbb89e;
+      border-radius: 0;
+      background: #eee3d0;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link {
+      min-height: 3rem;
+      border: 1px solid #503729;
+      border-radius: 0;
+      background: #31241e;
+      color: #fff7e8;
+      font-size: 0.88rem;
+      letter-spacing: 0.07em;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible {
+      background: #543c2b;
+      color: #fff7e8;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 0;
+    }
+
+    .share-button .ktalk-share {
+      border: 1px solid #b7986e;
+      background: transparent;
+      color: #fff7e8;
+    }
+
+    .modal-background > .modal {
+      border-radius: 0;
+      background: var(--light-color);
+    }
+  }
+
+  // 세로 비교 카드에서도 첫 화면의 날짜, 이름, 장소가 한꺼번에 보이게 합니다.
+  .design-compare__sample[data-design="cinema"] {
+    .design-compare__paper {
+      background: #1b1614;
+
+      .cover {
+        min-height: 30rem;
+        padding: 6.5rem 1rem 1.9rem;
+        background: #1b1614;
+
+        .image-wrapper {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+        }
+
+        .wedding-date {
+          top: 1.65rem;
+          font-size: 0.72rem;
+        }
+
+        .wedding-day-of-week {
+          top: 2.9rem;
+        }
+
+        .subtitle {
+          margin: 0 0 0.4rem;
+          font-size: 0.47rem;
+        }
+
+        .names {
+          margin-bottom: 0.55rem;
+          font-size: 1.72rem;
+        }
+
+        .info {
+          font-size: 0.64rem;
+          line-height: 1.45;
+        }
+      }
+    }
+
+    .design-compare__invitation {
+      background: #211b19;
+
+      > span {
+        color: #d7b788;
+      }
+      p {
+        color: #f4eddf;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html[data-design="cinema"] .cover .image-wrapper img,
+    .design-compare__sample[data-design="cinema"] .cover .image-wrapper img {
+      animation: none;
+      transform: none;
+    }
+
+    html[data-design="cinema"] .background .card-view {
+      .card-group,
+      .card-group .card,
+      .card-group .card.invitation > :not(h2),
+      .footer {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  }
+
+  @media print {
+    html[data-design="cinema"] .cover .image-wrapper img {
+      animation: none;
+      transform: none;
+    }
+  }
+}

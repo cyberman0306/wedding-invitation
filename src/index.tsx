@@ -17,7 +17,10 @@ const design = searchParams.get("design")
 if (
   !isAdminPage &&
   !isDesignCompare &&
-  (design === "ivory" || design === "ink")
+  (design === "ivory" ||
+    design === "ink" ||
+    design === "paper" ||
+    design === "cinema")
 ) {
   document.documentElement.dataset.design = design
 }
