@@ -11,17 +11,20 @@ import { dayjs } from "../const"
 import { auth } from "../firebase/firebase"
 import {
   ATTENDANCE_PAGE_SIZE,
+  downloadAttendanceCsv,
   getAttendancePage,
   type AttendanceCursor,
   type AttendancePage,
 } from "../services/attendanceService"
 import {
+  ADMIN_GUESTBOOK_PAGE_SIZE,
   deleteGuestbookPost,
   downloadGuestbookArchive,
+  getAdminGuestbookPage,
   isAdminUser,
   setGuestbookPostHidden,
-  subscribeAdminGuestbook,
-  type GuestbookPost,
+  type AdminGuestbookCursor,
+  type AdminGuestbookPage,
 } from "../services/guestbookService"
 import "./admin.scss"
 
@@ -33,8 +36,23 @@ export const AdminPage = () => {
   const [activeTab, setActiveTab] = useState<"guestbook" | "attendance">(
     "guestbook",
   )
-  const [posts, setPosts] = useState<GuestbookPost[]>([])
   const [error, setError] = useState("")
+  const [guestbookPage, setGuestbookPage] = useState<AdminGuestbookPage>({
+    posts: [],
+    nextCursor: null,
+    hasMore: false,
+  })
+  const [guestbookCursors, setGuestbookCursors] = useState<
+    AdminGuestbookCursor[]
+  >([null])
+  const [guestbookPageIndex, setGuestbookPageIndex] = useState(0)
+  const [guestbookRefreshKey, setGuestbookRefreshKey] = useState(0)
+  const [guestbookLoading, setGuestbookLoading] = useState(false)
+  const [guestbookError, setGuestbookError] = useState("")
+  const [guestbookExporting, setGuestbookExporting] = useState(false)
+  const [guestbookExportProgress, setGuestbookExportProgress] = useState(0)
+  const [guestbookExportStatus, setGuestbookExportStatus] = useState("")
+  const [guestbookExportError, setGuestbookExportError] = useState(false)
   const [attendancePage, setAttendancePage] = useState<AttendancePage>({
     responses: [],
     nextCursor: null,
@@ -46,6 +64,10 @@ export const AdminPage = () => {
   const [attendancePageIndex, setAttendancePageIndex] = useState(0)
   const [attendanceLoading, setAttendanceLoading] = useState(false)
   const [attendanceError, setAttendanceError] = useState("")
+  const [attendanceExporting, setAttendanceExporting] = useState(false)
+  const [attendanceExportProgress, setAttendanceExportProgress] = useState(0)
+  const [attendanceExportStatus, setAttendanceExportStatus] = useState("")
+  const [attendanceExportError, setAttendanceExportError] = useState(false)
 
   useEffect(() => {
     if (!auth) {
@@ -57,12 +79,19 @@ export const AdminPage = () => {
       setUser(nextUser)
       setAuthorized(false)
       setChecking(true)
-      setPosts([])
+      setGuestbookPage({ posts: [], nextCursor: null, hasMore: false })
+      setGuestbookCursors([null])
+      setGuestbookPageIndex(0)
+      setGuestbookError("")
+      setGuestbookExportStatus("")
+      setGuestbookExportError(false)
       setActiveTab("guestbook")
       setAttendancePage({ responses: [], nextCursor: null, hasMore: false })
       setAttendanceCursors([null])
       setAttendancePageIndex(0)
       setAttendanceError("")
+      setAttendanceExportStatus("")
+      setAttendanceExportError(false)
       setError("")
       if (nextUser) {
         try {
@@ -76,16 +105,30 @@ export const AdminPage = () => {
   }, [])
 
   useEffect(() => {
-    if (!authorized) return
-    try {
-      return subscribeAdminGuestbook(setPosts, () =>
-        setError("방명록을 불러오지 못했습니다."),
-      )
-    } catch {
-      setError("방명록을 불러오지 못했습니다.")
-      return undefined
+    if (!authorized || activeTab !== "guestbook") return
+    let active = true
+    setGuestbookLoading(true)
+    setGuestbookError("")
+    getAdminGuestbookPage(guestbookCursors[guestbookPageIndex])
+      .then((page) => {
+        if (active) setGuestbookPage(page)
+      })
+      .catch(() => {
+        if (active) setGuestbookError("방명록을 불러오지 못했습니다.")
+      })
+      .finally(() => {
+        if (active) setGuestbookLoading(false)
+      })
+    return () => {
+      active = false
     }
-  }, [authorized])
+  }, [
+    authorized,
+    activeTab,
+    guestbookCursors,
+    guestbookPageIndex,
+    guestbookRefreshKey,
+  ])
 
   useEffect(() => {
     if (!authorized || activeTab !== "attendance") return
@@ -150,66 +193,173 @@ export const AdminPage = () => {
           {activeTab === "guestbook" ? (
             <section aria-label="방명록 관리">
               <div className="admin-toolbar">
-                <span>불러온 방명록 {posts.length}개</span>
+                <span>
+                  방명록 {guestbookPageIndex + 1}페이지 · 페이지당 최대{" "}
+                  {ADMIN_GUESTBOOK_PAGE_SIZE}건
+                </span>
                 <button
                   type="button"
-                  onClick={() => downloadGuestbookArchive(posts)}
+                  disabled={guestbookLoading}
+                  onClick={() => {
+                    setGuestbookPageIndex(0)
+                    setGuestbookCursors([null])
+                  }}
                 >
-                  guestbook.json 내려받기
+                  새로고침
+                </button>
+                <button
+                  type="button"
+                  disabled={guestbookExporting}
+                  onClick={async () => {
+                    setGuestbookExporting(true)
+                    setGuestbookExportProgress(0)
+                    setGuestbookExportStatus("")
+                    setGuestbookExportError(false)
+                    try {
+                      const count = await downloadGuestbookArchive(
+                        setGuestbookExportProgress,
+                      )
+                      setGuestbookExportStatus(
+                        `공개 방명록 ${count}개를 저장했습니다. 숨김 글은 제외됩니다.`,
+                      )
+                    } catch {
+                      setGuestbookExportError(true)
+                      setGuestbookExportStatus(
+                        "전체 방명록 저장에 실패했습니다. 파일은 생성되지 않았습니다.",
+                      )
+                    } finally {
+                      setGuestbookExporting(false)
+                    }
+                  }}
+                >
+                  공개 방명록 전체 JSON 저장
                 </button>
               </div>
-              {error && <p className="admin-error">{error}</p>}
-              <div className="admin-posts">
-                {posts.map((post) => (
-                  <article
-                    className={post.hidden ? "hidden" : ""}
-                    key={post.id}
-                  >
-                    <div className="admin-post-heading">
-                      <strong>{post.name}</strong>
-                      <time>
-                        {dayjs.unix(post.createdAt).format("YYYY-MM-DD HH:mm")}
-                      </time>
-                    </div>
-                    <p>{post.message}</p>
-                    <div className="admin-actions">
-                      <button
-                        type="button"
-                        onClick={async () => {
-                          try {
-                            await setGuestbookPostHidden(post.id, !post.hidden)
-                          } catch {
-                            alert("상태 변경에 실패했습니다.")
-                          }
-                        }}
-                      >
-                        {post.hidden ? "다시 표시" : "숨기기"}
-                      </button>
-                      <button
-                        type="button"
-                        className="danger"
-                        onClick={async () => {
-                          if (!window.confirm("이 방명록을 영구 삭제할까요?"))
-                            return
-                          try {
-                            await deleteGuestbookPost(post.id)
-                          } catch {
-                            alert("삭제에 실패했습니다.")
-                          }
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </article>
-                ))}
+              <p className="admin-note">
+                새 글은 새로고침 후 표시됩니다. JSON 저장은 현재 페이지와
+                관계없이 공개 방명록 전체를 가져옵니다. 결혼식 후 최종 보관
+                시에는 마지막 글 정리를 마치고 Firestore 쓰기를 차단한 다음
+                저장하세요.
+              </p>
+              {guestbookExporting && (
+                <p role="status">방명록 {guestbookExportProgress}건 확인 중…</p>
+              )}
+              {guestbookExportStatus && !guestbookExporting && (
+                <p
+                  className={guestbookExportError ? "admin-error" : undefined}
+                  role={guestbookExportError ? "alert" : "status"}
+                >
+                  {guestbookExportStatus}
+                </p>
+              )}
+              {guestbookError && (
+                <p className="admin-error" role="alert">
+                  {guestbookError}
+                </p>
+              )}
+              {guestbookError ? null : guestbookLoading ? (
+                <p role="status">방명록을 불러오는 중입니다.</p>
+              ) : guestbookPage.posts.length === 0 ? (
+                <p className="admin-empty">이 페이지에 방명록이 없습니다.</p>
+              ) : (
+                <div className="admin-posts">
+                  {guestbookPage.posts.map((post) => (
+                    <article
+                      className={post.hidden ? "hidden" : ""}
+                      key={post.id}
+                    >
+                      <div className="admin-post-heading">
+                        <strong>{post.name}</strong>
+                        <time>
+                          {dayjs
+                            .unix(post.createdAt)
+                            .format("YYYY-MM-DD HH:mm")}
+                        </time>
+                      </div>
+                      <p>{post.message}</p>
+                      <div className="admin-actions">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            try {
+                              await setGuestbookPostHidden(
+                                post.id,
+                                !post.hidden,
+                              )
+                              setGuestbookRefreshKey((key) => key + 1)
+                            } catch {
+                              alert("상태 변경에 실패했습니다.")
+                            }
+                          }}
+                        >
+                          {post.hidden ? "다시 표시" : "숨기기"}
+                        </button>
+                        <button
+                          type="button"
+                          className="danger"
+                          onClick={async () => {
+                            if (!window.confirm("이 방명록을 영구 삭제할까요?"))
+                              return
+                            try {
+                              await deleteGuestbookPost(post.id)
+                              if (
+                                guestbookPage.posts.length === 1 &&
+                                !guestbookPage.hasMore &&
+                                guestbookPageIndex > 0
+                              ) {
+                                setGuestbookPageIndex((index) => index - 1)
+                                setGuestbookCursors((cursors) =>
+                                  cursors.slice(0, -1),
+                                )
+                              } else {
+                                setGuestbookRefreshKey((key) => key + 1)
+                              }
+                            } catch {
+                              alert("삭제에 실패했습니다.")
+                            }
+                          }}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+              <div className="admin-pagination">
+                <button
+                  type="button"
+                  disabled={guestbookLoading || guestbookPageIndex === 0}
+                  onClick={() => setGuestbookPageIndex((index) => index - 1)}
+                >
+                  이전
+                </button>
+                <button
+                  type="button"
+                  disabled={
+                    guestbookLoading ||
+                    Boolean(guestbookError) ||
+                    !guestbookPage.hasMore ||
+                    !guestbookPage.nextCursor
+                  }
+                  onClick={() => {
+                    if (!guestbookPage.nextCursor) return
+                    setGuestbookCursors((cursors) => [
+                      ...cursors.slice(0, guestbookPageIndex + 1),
+                      guestbookPage.nextCursor,
+                    ])
+                    setGuestbookPageIndex((index) => index + 1)
+                  }}
+                >
+                  다음
+                </button>
               </div>
             </section>
           ) : (
-            <section aria-label="참석 의사 내역">
+            <section aria-label="참석 의사 접수 내역">
               <div className="admin-toolbar">
                 <span>
-                  {attendancePageIndex + 1}페이지 · 페이지당 최대{" "}
+                  참석 의사 {attendancePageIndex + 1}페이지 · 페이지당 최대{" "}
                   {ATTENDANCE_PAGE_SIZE}건
                 </span>
                 <button
@@ -222,7 +372,52 @@ export const AdminPage = () => {
                 >
                   새로고침
                 </button>
+                <button
+                  type="button"
+                  disabled={attendanceExporting}
+                  onClick={async () => {
+                    setAttendanceExporting(true)
+                    setAttendanceExportProgress(0)
+                    setAttendanceExportStatus("")
+                    setAttendanceExportError(false)
+                    try {
+                      const count = await downloadAttendanceCsv(
+                        setAttendanceExportProgress,
+                      )
+                      setAttendanceExportStatus(
+                        `참석 의사 응답 ${count}건을 CSV로 저장했습니다.`,
+                      )
+                    } catch {
+                      setAttendanceExportError(true)
+                      setAttendanceExportStatus(
+                        "참석 의사 전체 저장에 실패했습니다. 파일은 생성되지 않았습니다.",
+                      )
+                    } finally {
+                      setAttendanceExporting(false)
+                    }
+                  }}
+                >
+                  참석 의사 전체 CSV 저장
+                </button>
               </div>
+              <p className="admin-note">
+                제출된 응답 내역입니다. 같은 분이 다시 제출하면 별도 건으로
+                표시되며, 실제 방문 완료 기록은 아닙니다. 새 응답은 새로고침 후
+                표시됩니다.
+              </p>
+              {attendanceExporting && (
+                <p role="status">
+                  참석 의사 {attendanceExportProgress}건 확인 중…
+                </p>
+              )}
+              {attendanceExportStatus && !attendanceExporting && (
+                <p
+                  className={attendanceExportError ? "admin-error" : undefined}
+                  role={attendanceExportError ? "alert" : "status"}
+                >
+                  {attendanceExportStatus}
+                </p>
+              )}
               {attendanceError && (
                 <p className="admin-error" role="alert">
                   {attendanceError}
@@ -260,7 +455,7 @@ export const AdminPage = () => {
                               ? "예정"
                               : response.meal === "undecided"
                                 ? "미정"
-                                : "불참"}
+                                : "식사 안 함"}
                           </dd>
                         </div>
                         <div>

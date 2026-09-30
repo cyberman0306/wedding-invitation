@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  documentId,
   getDoc,
   getDocs,
   limit,
@@ -13,6 +14,7 @@ import {
   startAfter,
   updateDoc,
   where,
+  type QueryConstraint,
   type Timestamp,
   type DocumentData,
   type QueryDocumentSnapshot,
@@ -34,12 +36,25 @@ export type GuestbookPost = {
 }
 
 export const GUESTBOOK_PAGE_SIZE = 5
+export const ADMIN_GUESTBOOK_PAGE_SIZE = 20
+const GUESTBOOK_EXPORT_BATCH_SIZE = 200
 
-export type GuestbookCursor = QueryDocumentSnapshot<DocumentData> | number | null
+export type GuestbookCursor =
+  | QueryDocumentSnapshot<DocumentData>
+  | number
+  | null
 
 export type GuestbookPage = {
   posts: GuestbookPost[]
   nextCursor: GuestbookCursor
+  hasMore: boolean
+}
+
+export type AdminGuestbookCursor = QueryDocumentSnapshot<DocumentData> | null
+
+export type AdminGuestbookPage = {
+  posts: GuestbookPost[]
+  nextCursor: AdminGuestbookCursor
   hasMore: boolean
 }
 
@@ -117,9 +132,7 @@ export const subscribeGuestbook = (
   return onSnapshot(
     guestbookQuery,
     (snapshot) =>
-      onPosts(
-        snapshot.docs.map((item) => fromFirestore(item.id, item.data())),
-      ),
+      onPosts(snapshot.docs.map((item) => fromFirestore(item.id, item.data()))),
     (error) => onError(error),
   )
 }
@@ -147,7 +160,9 @@ export const getGuestbookPage = async (
     ...(cursor && typeof cursor !== "number" ? [startAfter(cursor)] : []),
     limit(GUESTBOOK_PAGE_SIZE + 1),
   ]
-  const snapshot = await getDocs(query(collection(db, "guestbook"), ...constraints))
+  const snapshot = await getDocs(
+    query(collection(db, "guestbook"), ...constraints),
+  )
   const visibleDocs = snapshot.docs.slice(0, GUESTBOOK_PAGE_SIZE)
 
   return {
@@ -169,20 +184,26 @@ export const createGuestbookPost = async (name: string, message: string) => {
   })
 }
 
-/** 관리자용 전체 방명록 구독입니다. */
-export const subscribeAdminGuestbook = (
-  onPosts: (posts: GuestbookPost[]) => void,
-  onError: (error: Error) => void,
-) => {
+/** 관리자 화면에서 숨김 글을 포함한 방명록을 한 페이지씩 읽습니다. */
+export const getAdminGuestbookPage = async (
+  cursor: AdminGuestbookCursor = null,
+): Promise<AdminGuestbookPage> => {
   const { db } = requireFirebase()
-  return onSnapshot(
-    query(collection(db, "guestbook"), orderBy("createdAt", "desc"), limit(500)),
-    (snapshot) =>
-      onPosts(
-        snapshot.docs.map((item) => fromFirestore(item.id, item.data())),
-      ),
-    (error) => onError(error),
+  const constraints = [
+    orderBy("createdAt", "desc"),
+    ...(cursor ? [startAfter(cursor)] : []),
+    limit(ADMIN_GUESTBOOK_PAGE_SIZE + 1),
+  ]
+  const snapshot = await getDocs(
+    query(collection(db, "guestbook"), ...constraints),
   )
+  const pageDocs = snapshot.docs.slice(0, ADMIN_GUESTBOOK_PAGE_SIZE)
+
+  return {
+    posts: pageDocs.map((item) => fromFirestore(item.id, item.data())),
+    nextCursor: pageDocs[pageDocs.length - 1] ?? null,
+    hasMore: snapshot.docs.length > ADMIN_GUESTBOOK_PAGE_SIZE,
+  }
 }
 
 export const isAdminUser = async (uid: string) => {
@@ -201,25 +222,57 @@ export const deleteGuestbookPost = async (id: string) => {
   await deleteDoc(doc(db, "guestbook", id))
 }
 
-/** Firebase 제거 전 저장할 정적 JSON 파일을 내려받습니다. */
-export const downloadGuestbookArchive = (posts: GuestbookPost[]) => {
-  // 정적 JSON은 누구나 직접 열 수 있으므로 숨김 글은 파일에 포함하지 않습니다.
-  const archived = posts
-    .filter((post) => !post.hidden)
-    .map(({ id, name, message, createdAt }) => ({
-      id,
-      name,
-      message,
-      createdAt,
-      hidden: false,
-    }))
-  const blob = new Blob([JSON.stringify(archived, null, 2)], {
+/** 관리자 목록의 현재 페이지와 무관하게 모든 공개 글을 백업합니다. */
+export const downloadGuestbookArchive = async (
+  onProgress?: (processedCount: number) => void,
+): Promise<number> => {
+  const { db } = requireFirebase()
+  const archived: GuestbookPost[] = []
+  let cursor: AdminGuestbookCursor = null
+  let processedCount = 0
+
+  // 문서 ID 정렬은 작성 시각이 없는 과거 문서도 빠짐없이 조회합니다.
+  while (true) {
+    const constraints: QueryConstraint[] = [
+      orderBy(documentId()),
+      ...(cursor ? [startAfter(cursor)] : []),
+      limit(GUESTBOOK_EXPORT_BATCH_SIZE),
+    ]
+    const snapshot = await getDocs(
+      query(collection(db, "guestbook"), ...constraints),
+    )
+    for (const item of snapshot.docs) {
+      const data = item.data()
+      // LIVE 공개 조회와 동일하게 hidden이 명시적으로 false인 글만 저장합니다.
+      if (data.hidden === false) archived.push(fromFirestore(item.id, data))
+    }
+    processedCount += snapshot.docs.length
+    onProgress?.(processedCount)
+    if (snapshot.docs.length < GUESTBOOK_EXPORT_BATCH_SIZE) break
+    cursor = snapshot.docs[snapshot.docs.length - 1]
+  }
+
+  archived.sort((a, b) => b.createdAt - a.createdAt || a.id.localeCompare(b.id))
+  const archiveData = archived.map(({ id, name, message, createdAt }) => ({
+    id,
+    name,
+    message,
+    createdAt,
+    hidden: false,
+  }))
+  const blob = new Blob([JSON.stringify(archiveData, null, 2)], {
     type: "application/json",
   })
   const url = URL.createObjectURL(blob)
   const anchor = document.createElement("a")
   anchor.href = url
   anchor.download = "guestbook.json"
-  anchor.click()
-  URL.revokeObjectURL(url)
+  document.body.append(anchor)
+  try {
+    anchor.click()
+  } finally {
+    anchor.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000)
+  }
+  return archiveData.length
 }

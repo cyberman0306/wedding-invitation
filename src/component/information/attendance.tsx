@@ -325,7 +325,7 @@ const AttendanceFormModal = ({ onClose }: { onClose: () => void }) => {
                   inputRef.current.meal.no = ref as HTMLInputElement
                 }}
               />
-              <span>불참</span>
+              <span>식사 안 함</span>
             </label>
           </div>
         </div>

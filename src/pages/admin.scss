@@ -112,6 +112,13 @@
   text-align: center;
 }
 
+.admin-note {
+  margin: 0 0 1rem;
+  color: var(--dark-grey-color);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
 .admin-pagination {
   display: flex;
   justify-content: center;
