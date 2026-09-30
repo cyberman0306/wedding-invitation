@@ -9,6 +9,7 @@
 @use "./component/guestbook";
 @use "./component/modal";
 @use "./component/shareButton";
+@use "./designThemes" as designThemes;
 
 :root {
   --theme-color: #a88750;
@@ -249,3 +250,5 @@ h2 {
 div.break {
   height: 1rem;
 }
+
+@include designThemes.styles();

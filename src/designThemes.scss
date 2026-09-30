@@ -1,0 +1,566 @@
+// App.scss의 기본 스타일 뒤에 포함해 기본 시안은 그대로 둡니다.
+@mixin styles {
+  // 비교 화면과 실제 청첩장이 같은 색상 체계를 사용합니다.
+  html[data-design="ivory"],
+  .design-compare__sample[data-design="ivory"] {
+    --theme-color: #927148;
+    --theme-bg-color: #f1ede5;
+    --alt-color: #74634d;
+    --alt-bg-color: #f7f3eb;
+    --dark-color: #302920;
+    --dark-grey-color: #beb3a2;
+    --light-grey-color: #e8e0d3;
+    --light-color: #fffdf8;
+    --white-color: #fffdf8;
+    --red-color: #a65b54;
+
+    h2.english {
+      color: var(--theme-color);
+      font-family: "Allura", cursive;
+      font-size: 2.15rem;
+      letter-spacing: 0;
+    }
+
+    .cover {
+      .wedding-date {
+        gap: 0.65rem;
+        margin-top: 1.2rem;
+        color: var(--dark-color);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.25rem;
+        letter-spacing: 0.12em;
+
+        .divider {
+          height: 0.6rem;
+          background-color: #b9a47f;
+        }
+      }
+
+      .wedding-day-of-week {
+        margin-bottom: 1.55rem;
+        color: var(--alt-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        width: calc(100% + 1rem);
+        height: 29rem;
+        margin-inline: -0.5rem;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 43%;
+        }
+
+        @media (max-width: 500px) {
+          height: clamp(23rem, 55svh, 29rem);
+        }
+      }
+
+      .subtitle {
+        margin-top: 1.5rem;
+        color: var(--theme-color);
+        font-size: 1.45rem;
+      }
+
+      .names {
+        gap: 0.85rem;
+        margin-top: 0.55rem;
+        margin-bottom: 1rem;
+        font-size: 1.45rem;
+        letter-spacing: 0.06em;
+
+        .divider {
+          width: 1.5rem;
+          height: 1px;
+          background-color: var(--theme-color);
+        }
+      }
+
+      .info {
+        color: var(--alt-color);
+        font-size: 0.83rem;
+        line-height: 1.7;
+        opacity: 1;
+      }
+    }
+  }
+
+  html[data-design="ink"],
+  .design-compare__sample[data-design="ink"] {
+    --theme-color: #78613d;
+    --theme-bg-color: #eceae5;
+    --alt-color: #665a48;
+    --alt-bg-color: #f5f3ef;
+    --dark-color: #191919;
+    --dark-grey-color: #aaa49b;
+    --light-grey-color: #e0ddd6;
+    --light-color: #ffffff;
+    --white-color: #ffffff;
+    --red-color: #a14f47;
+
+    h2.english {
+      color: var(--theme-color);
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.31em;
+      line-height: 1.5;
+      text-transform: uppercase;
+    }
+
+    .cover {
+      .wedding-date {
+        gap: 0.4rem;
+        margin-top: 1.3rem;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.9rem;
+        letter-spacing: -0.06em;
+        line-height: 1;
+
+        .divider {
+          height: 1.25rem;
+          background-color: var(--theme-color);
+        }
+      }
+
+      .wedding-day-of-week {
+        margin-top: 0.6rem;
+        margin-bottom: 1.4rem;
+        color: var(--alt-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.66rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        opacity: 1;
+      }
+
+      .image-wrapper {
+        width: calc(100% + 4rem);
+        height: 30rem;
+        margin-inline: -2rem;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 42%;
+          filter: saturate(0.8) contrast(1.04);
+        }
+
+        @media (max-width: 980px) {
+          width: calc(100% + 3rem);
+          margin-inline: -1.5rem;
+        }
+
+        @media (max-width: 500px) {
+          height: clamp(24rem, 60svh, 31rem);
+        }
+      }
+
+      .subtitle {
+        margin-top: 1.65rem;
+        color: var(--theme-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.62rem;
+        font-weight: 600;
+        letter-spacing: 0.13em;
+        line-height: 1.5;
+        text-transform: uppercase;
+      }
+
+      .names {
+        gap: 0.8rem;
+        margin-top: 0.65rem;
+        margin-bottom: 0.9rem;
+        font-size: 1.55rem;
+        letter-spacing: 0.04em;
+
+        .divider {
+          width: 1rem;
+          height: auto;
+          background: none;
+
+          &::before {
+            content: "×";
+            color: var(--theme-color);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 1.1rem;
+          }
+        }
+      }
+
+      .info {
+        color: var(--alt-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.77rem;
+        letter-spacing: 0.025em;
+        line-height: 1.7;
+        opacity: 1;
+      }
+    }
+  }
+
+  // 비교 카드의 높이는 통일하고, 사진의 배치는 각 시안대로 보여줍니다.
+  .design-compare__sample[data-design="ivory"] .cover .image-wrapper {
+    height: 24rem;
+  }
+
+  .design-compare__sample[data-design="ink"] .cover .image-wrapper {
+    width: calc(100% + 2.1rem);
+    height: 24rem;
+    margin-inline: -1.05rem;
+  }
+
+  // 실제 초대장 전체에서만 적용되는 공통 정리입니다.
+  html[data-design="ivory"],
+  html[data-design="ink"] {
+    body,
+    .background {
+      background-color: var(--theme-bg-color);
+    }
+
+    .background .card-view {
+      @media (max-width: 980px) {
+        background-color: var(--light-color);
+        box-shadow: 0 0.8rem 2.7rem rgba(36, 28, 19, 0.07);
+      }
+
+      .card-group {
+        @media (width > 980px) {
+          margin: 0 0 0.8rem;
+          box-shadow: 0 0.8rem 2.7rem rgba(36, 28, 19, 0.06);
+        }
+
+        .card {
+          border: 0;
+          background-color: var(--light-color);
+
+          @media (max-width: 980px) {
+            padding: 4rem 1.5rem;
+          }
+        }
+
+        &:nth-of-type(odd) > .card {
+          background-color: var(--light-color);
+        }
+      }
+
+      .footer {
+        border: 0;
+        background-color: var(--light-color);
+      }
+    }
+
+    .modal-background > .modal {
+      background-color: var(--light-color);
+    }
+  }
+
+  html[data-design="ivory"] {
+    .background .card-view {
+      .card-group .card {
+        @media (max-width: 980px) {
+          padding-block: 4.1rem;
+        }
+
+        &.cover {
+          @media (max-width: 980px) {
+            padding-top: 1.35rem;
+          }
+        }
+      }
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.6rem;
+        line-height: 1.9;
+      }
+
+      .name {
+        color: var(--dark-color);
+        line-height: 1.7;
+      }
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.7rem 0.45rem;
+      border: 0;
+
+      > div.head {
+        background: none;
+        color: var(--alt-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+      }
+
+      > div.wedding-date {
+        > div.heart {
+          top: 10%;
+          left: 10%;
+          width: 80%;
+          height: 80%;
+          transform: none;
+          border-radius: 50%;
+          background-color: #eadbc2;
+
+          &::before,
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: var(--theme-color);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+    }
+
+    button.button.button-style-1,
+    .information .wreath-card .wreath-link {
+      border: 0;
+      border-radius: 2rem;
+      background-color: #e9ddc9;
+      color: var(--dark-color);
+      padding: 0.8rem 1.3rem;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible,
+    .information .wreath-card .wreath-link:hover,
+    .information .wreath-card .wreath-link:focus-visible {
+      background-color: #ded0b6;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 2rem;
+      background-color: var(--theme-color);
+      color: var(--white-color);
+    }
+
+    .information .info-card {
+      border: 0;
+      padding-top: 1.5rem;
+
+      .label {
+        letter-spacing: 0.05em;
+
+        &::before {
+          content: "✦";
+          display: block;
+          margin-bottom: 0.7rem;
+          color: var(--theme-color);
+          font-size: 0.65rem;
+        }
+      }
+    }
+
+    .gallery .carousel-item img,
+    .location .map-wrapper {
+      border-radius: 0.25rem;
+    }
+
+    .location .navigation > button {
+      border-right: 0;
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      border: 0;
+      border-radius: 0.25rem;
+      background-color: var(--alt-bg-color);
+    }
+
+    .share-button .ktalk-share {
+      border: 0;
+      border-radius: 2rem;
+      background-color: #e9ddc9;
+    }
+
+    .modal-background > .modal {
+      border-radius: 0.45rem;
+    }
+  }
+
+  html[data-design="ink"] {
+    .background .card-view {
+      .card-group {
+        @media (width > 980px) {
+          box-shadow: none;
+        }
+
+        .card {
+          @media (max-width: 980px) {
+            padding-block: 4.35rem;
+          }
+
+          &.cover {
+            @media (max-width: 980px) {
+              padding-top: 1rem;
+            }
+          }
+        }
+
+        &:nth-of-type(even) > .card {
+          background-color: var(--alt-bg-color);
+        }
+      }
+
+      .footer {
+        background-color: var(--alt-bg-color);
+      }
+    }
+
+    .card > h2.english::after {
+      content: "";
+      display: block;
+      width: 1.6rem;
+      height: 0.12rem;
+      margin: 1.1rem auto 0;
+      background-color: var(--theme-color);
+    }
+
+    .invitation {
+      .content {
+        margin-block: 0.65rem;
+        line-height: 1.9;
+      }
+
+      .name {
+        font-size: 1.15rem;
+        line-height: 1.65;
+      }
+    }
+
+    .calendar .calendar-wrapper {
+      margin: 1.7rem 0;
+      border: 0;
+
+      > div.head {
+        background: none;
+        color: var(--alt-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+      }
+
+      > div.wedding-date {
+        > span {
+          color: var(--white-color);
+        }
+
+        > div.heart {
+          top: 10%;
+          left: 10%;
+          width: 80%;
+          height: 80%;
+          transform: none;
+          border-radius: 50%;
+          background-color: var(--dark-color);
+
+          &::before,
+          &::after {
+            content: none;
+          }
+        }
+      }
+    }
+
+    .calendar .countdown-wrapper .countdown .count {
+      color: var(--dark-color);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.45rem;
+    }
+
+    button.button.button-style-1 {
+      border: 0;
+      border-radius: 0;
+      background-color: var(--dark-color);
+      color: var(--white-color);
+      padding: 0.9rem 1.25rem;
+    }
+
+    button.button.button-style-1:hover,
+    button.button.button-style-1:focus-visible {
+      background-color: #393837;
+    }
+
+    button.button.button-style-2 {
+      border-radius: 0;
+    }
+
+    .information .info-card {
+      border: 0;
+      padding-top: 2.3rem;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: calc(50% - 0.8rem);
+        width: 1.6rem;
+        height: 0.12rem;
+        background-color: var(--dark-color);
+      }
+
+      .label {
+        color: var(--dark-color);
+        font-family: Arial, sans-serif;
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+      }
+    }
+
+    .information .wreath-card .wreath-link {
+      width: auto;
+      border: 0;
+      border-bottom: 1px solid var(--dark-color);
+      border-radius: 0;
+      background: none;
+      color: var(--dark-color);
+      padding-inline: 0.2rem;
+
+      &:hover,
+      &:focus-visible {
+        border-color: var(--theme-color);
+        background: none;
+      }
+    }
+
+    .gallery .carousel-item img {
+      filter: saturate(0.9);
+    }
+
+    .location .navigation > button {
+      border-right: 0;
+    }
+
+    .guestbook .post,
+    .guestbook-list-modal .post {
+      border: 0;
+      border-radius: 0;
+      background-color: var(--alt-bg-color);
+    }
+
+    .share-button .ktalk-share {
+      border: 0;
+      border-bottom: 1px solid var(--dark-color);
+      background-color: transparent;
+    }
+
+    .modal-background > .modal {
+      border-radius: 0;
+    }
+  }
+}
