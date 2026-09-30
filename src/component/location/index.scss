@@ -51,16 +51,16 @@
       gap: 0.35rem;
       min-height: 2.3rem;
       margin-top: 0.3rem;
-      padding: 0.5rem;
+      padding: 0.5rem 0.2rem;
       border-bottom: 1px solid var(--theme-color);
-      color: var(--theme-color);
-      font-size: 0.85rem;
+      color: var(--dark-color);
+      font-size: 0.9rem;
       cursor: pointer;
 
       svg {
-        width: 0.85rem;
-        height: 0.85rem;
-        color: inherit;
+        width: 0.95rem;
+        height: 0.95rem;
+        color: var(--theme-color);
       }
 
       &:focus-visible {
@@ -74,18 +74,15 @@
     }
 
     .copy-status {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-    }
-
-    .copy-fallback {
-      margin-top: 0.45rem;
+      display: block;
+      margin-top: 0.4rem;
       color: var(--alt-color);
-      font-size: 0.72rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+
+      &:empty {
+        display: none;
+      }
     }
   }
 
