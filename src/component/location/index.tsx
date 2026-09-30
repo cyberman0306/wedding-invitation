@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Map } from "./map"
 import CarIcon from "../../icons/car-icon.svg?react"
 import BusIcon from "../../icons/bus-icon.svg?react"
@@ -15,17 +16,61 @@ import {
  * @returns {JSX.Element} 오시는 길 섹션
  */
 export const Location = () => {
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">(
+    "idle",
+  )
+
+  /** 도로명 주소를 복사하고 결과를 화면에 알립니다. */
+  const copyAddress = async () => {
+    try {
+      await navigator.clipboard.writeText(LOCATION_ROAD_ADDRESS)
+      setCopyStatus("copied")
+    } catch {
+      setCopyStatus("failed")
+    }
+  }
+
   return (
     <>
       {/* 지도 및 주소 섹션 */}
       <LazyDiv className="card location">
         <h2 className="english">Location</h2>
         <div className="addr">
-          {LOCATION}
+          <div className="venue-name">{LOCATION}</div>
           <div className="detail">
             <span className="road-address">{LOCATION_ROAD_ADDRESS}</span>
             <span className="parcel-address">({LOCATION_PARCEL_ADDRESS})</span>
           </div>
+          <button
+            type="button"
+            className="copy-address"
+            onClick={copyAddress}
+            aria-label="도로명 주소 복사"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="8" y="8" width="11" height="11" rx="1.5" />
+              <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+            </svg>
+            {copyStatus === "copied" ? "복사 완료" : "주소 복사"}
+          </button>
+          <span className="copy-status" role="status" aria-live="polite">
+            {copyStatus === "copied" && "도로명 주소가 복사되었습니다."}
+            {copyStatus === "failed" &&
+              "복사할 수 없습니다. 주소를 길게 눌러 복사해 주세요."}
+          </span>
+          {copyStatus === "failed" && (
+            <div className="copy-fallback">
+              주소를 길게 눌러 복사해 주세요.
+            </div>
+          )}
         </div>
         <Map />
       </LazyDiv>

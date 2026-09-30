@@ -19,19 +19,73 @@
   .addr {
     line-height: 1.55;
     margin-bottom: 1.25rem;
+
+    .venue-name {
+      font-weight: 600;
+    }
+
     .detail {
       margin-top: 0.45rem;
       font-size: 0.9rem;
+      user-select: text;
+      -webkit-user-select: text;
+
       .road-address,
       .parcel-address {
         display: block;
         word-break: keep-all;
+        user-select: text;
+        -webkit-user-select: text;
       }
+
       .parcel-address {
         margin-top: 0.15rem;
         color: var(--alt-color);
         font-size: 0.88rem;
       }
+    }
+
+    .copy-address {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 2.3rem;
+      margin-top: 0.3rem;
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--theme-color);
+      color: var(--theme-color);
+      font-size: 0.85rem;
+      cursor: pointer;
+
+      svg {
+        width: 0.85rem;
+        height: 0.85rem;
+        color: inherit;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--theme-color);
+        outline-offset: 0.2rem;
+      }
+
+      @media (max-width: 500px) {
+        min-height: 3rem;
+      }
+    }
+
+    .copy-status {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+    }
+
+    .copy-fallback {
+      margin-top: 0.45rem;
+      color: var(--alt-color);
+      font-size: 0.72rem;
     }
   }
 
