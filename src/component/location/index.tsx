@@ -16,15 +16,18 @@ import {
  * @returns {JSX.Element} 오시는 길 섹션
  */
 export const Location = () => {
-  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">(
-    "idle",
-  )
+  const [copyStatus, setCopyStatus] = useState<
+    "idle" | "copying" | "copied" | "failed"
+  >("idle")
   const addressRef = useRef<HTMLSpanElement>(null)
   const statusTimeout = useRef<number | null>(null)
+  const clipboardTimeout = useRef<number | null>(null)
+  const copyAttempt = useRef(0)
 
   useEffect(
     () => () => {
       if (statusTimeout.current !== null) clearTimeout(statusTimeout.current)
+      if (clipboardTimeout.current !== null) clearTimeout(clipboardTimeout.current)
     },
     [],
   )
@@ -52,25 +55,57 @@ export const Location = () => {
   }
 
   /** 도로명 주소를 복사하고 결과를 화면에 알립니다. */
-  const copyAddress = async () => {
+  const copyAddress = () => {
+    const attempt = ++copyAttempt.current
     if (statusTimeout.current !== null) clearTimeout(statusTimeout.current)
-    setCopyStatus("idle")
+    if (clipboardTimeout.current !== null) clearTimeout(clipboardTimeout.current)
+    setCopyStatus("copying")
 
-    let copied = false
-    if (navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(LOCATION_ROAD_ADDRESS)
-        copied = true
-      } catch {
-        // 일부 모바일 앱 내 브라우저는 Clipboard API를 제공해도 쓰기를 거부합니다.
+    const finish = (copied: boolean) => {
+      if (attempt !== copyAttempt.current) return
+      setCopyStatus(copied ? "copied" : "failed")
+      if (copied) {
+        statusTimeout.current = window.setTimeout(() => {
+          if (attempt === copyAttempt.current) setCopyStatus("idle")
+        }, 3000)
       }
     }
 
-    if (!copied) copied = copySelectedAddress()
-    setCopyStatus(copied ? "copied" : "failed")
+    if (!navigator.clipboard?.writeText) {
+      finish(copySelectedAddress())
+      return
+    }
 
-    if (copied) {
-      statusTimeout.current = window.setTimeout(() => setCopyStatus("idle"), 3000)
+    // 응답이 멈춘 브라우저에서도 방문자가 직접 주소를 복사할 수 있게 안내합니다.
+    clipboardTimeout.current = window.setTimeout(() => {
+      clipboardTimeout.current = null
+      if (attempt !== copyAttempt.current) return
+      copySelectedAddress()
+      finish(false)
+    }, 4000)
+
+    try {
+      // 사용자 터치 이벤트 안에서 바로 호출해야 iOS Safari의 복사 권한이 유지됩니다.
+      navigator.clipboard.writeText(LOCATION_ROAD_ADDRESS).then(
+        () => {
+          if (clipboardTimeout.current === null || attempt !== copyAttempt.current)
+            return
+          clearTimeout(clipboardTimeout.current)
+          clipboardTimeout.current = null
+          finish(true)
+        },
+        () => {
+          if (clipboardTimeout.current === null || attempt !== copyAttempt.current)
+            return
+          clearTimeout(clipboardTimeout.current)
+          clipboardTimeout.current = null
+          finish(copySelectedAddress())
+        },
+      )
+    } catch {
+      if (clipboardTimeout.current !== null) clearTimeout(clipboardTimeout.current)
+      clipboardTimeout.current = null
+      finish(copySelectedAddress())
     }
   }
 
@@ -114,9 +149,10 @@ export const Location = () => {
                 : "도로명 주소 복사"}
           </button>
           <span className="copy-status" role="status" aria-live="polite">
+            {copyStatus === "copying" && "주소를 복사하는 중입니다…"}
             {copyStatus === "copied" && "도로명 주소가 복사되었습니다."}
             {copyStatus === "failed" &&
-              "복사할 수 없었습니다. 위 주소를 길게 눌러 복사해 주세요."}
+              "자동 복사가 확인되지 않았습니다. 위 주소를 길게 눌러 복사해 주세요."}
           </span>
         </div>
         <Map />

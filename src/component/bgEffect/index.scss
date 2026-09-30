@@ -8,4 +8,6 @@
   width: 100%;
   height: 100%;
   z-index: 2;
+  // 장식용 꽃잎 캔버스가 청첩장의 버튼 터치를 가로채지 않게 합니다.
+  pointer-events: none;
 }
